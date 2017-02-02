@@ -25,9 +25,9 @@ The following **optional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-[waiting...]
+version 1.1
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+(https://github.com/sine27/Flicks/blob/master/assign1-1.gif).
 
 ## Notes
 
