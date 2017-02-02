@@ -27,7 +27,7 @@ Here's a walkthrough of implemented user stories:
 
 version 1.1
 
-(https://github.com/sine27/Flicks/blob/master/assign1-1.gif).
+<img src='https://github.com/sine27/Flicks/blob/master/assign1-1.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
 
 ## Notes
 
