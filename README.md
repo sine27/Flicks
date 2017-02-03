@@ -3,9 +3,12 @@
 **Flicks** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
 Time spent: 
-**6** hours spent in Version 1.1
-**1** hours spent in Version 1.2
-**4** hours spent in Version 1.3
+
+- **6** hours spent in Version 1.1
+- **1** hours spent in Version 1.2
+- **4** hours spent in Version 1.3
+
+**11** hours spent in total
 
 
 ## User Stories
