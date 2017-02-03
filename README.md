@@ -7,8 +7,9 @@ Time spent:
 - **6** hours spent in Version 1.1
 - **1** hours spent in Version 1.2
 - **4** hours spent in Version 1.3
+- **3** hours spent in Version 1.4
 
-**11** hours spent in total
+**14** hours spent in total
 
 
 ## User Stories
@@ -22,7 +23,7 @@ The following **required** functionality is complete:
 
 The following **optional** features are implemented:
 
-- [ ] User sees an error message when there's a networking error.
+- ☑️ User sees an error message when there's a networking error.
 - ☑️ Movies are displayed using a CollectionView instead of a TableView.
 - ☑️ User can search for a movie.
 - ☑️ All images fade in as they are loading.
@@ -31,6 +32,7 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 - ☑️ Search "Not Found" notification
+- ☑️ "No More Result" symbol
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
@@ -52,13 +54,18 @@ version 1.3 Collection view
 
 <img src='https://github.com/sine27/Flicks/blob/master/demo/assign1-3collection.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
 
+version 1.4 "no more result" symbol & timeout notification and refresh enabled
+
+<img src='https://github.com/sine27/Flicks/blob/master/demo/assign1-4timeout.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
+
+
 ## Notes
 
 Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2017] [Shayin Feng]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

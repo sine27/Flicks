@@ -18,7 +18,7 @@ class HelperFunctions: NSObject {
         
     func activityIndicator(sender : AnyObject) {
         
-        blur.frame = CGRect(x: 30, y: 30, width: 80, height: 80)
+        blur.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
         blur.layer.cornerRadius = 10
         blur.center = sender.view.center
         blur.clipsToBounds = true
@@ -30,11 +30,11 @@ class HelperFunctions: NSObject {
         spinner.startAnimating()
         spinner.alpha = 0
         
-        sender.view.addSubview(blur)
+//        sender.view.addSubview(blur)
         sender.view.addSubview(spinner)
         
         UIView.animate(withDuration: 0.6, animations: {
-            self.blur.alpha = 1
+//            self.blur.alpha = 1
             self.spinner.alpha = 1
         })
     }
@@ -42,14 +42,20 @@ class HelperFunctions: NSObject {
     open func stopActivityIndicator() {
         spinner.stopAnimating()
         UIView.animate(withDuration: 0.4, animations: {
-            self.blur.alpha = 0
+//            self.blur.alpha = 0
             self.spinner.alpha = 0
         })
         spinner.removeFromSuperview()
-        blur.removeFromSuperview()
+//        blur.removeFromSuperview()
     }
     // <<<<<< Activity indicator
     
-    
+//    open func delay(time: Double, closure:()->()) {
+//        
+//        DispatchQueue.main.after(when: .now() + time) {
+//            closure()
+//        }
+//        
+//    }
     
 }

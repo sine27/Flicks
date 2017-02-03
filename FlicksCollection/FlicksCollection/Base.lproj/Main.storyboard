@@ -127,21 +127,36 @@
                                     <outletCollection property="gestureRecognizers" destination="cvf-Wm-xVB" appends="YES" id="shg-AE-jt3"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="luW-Iw-Wbm">
+                                <rect key="frame" x="157" y="303" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="1eY-eJ-7ty"/>
+                                    <constraint firstAttribute="height" constant="60" id="g3Z-AJ-wca"/>
+                                </constraints>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" backgroundImage="refreshButton"/>
+                                <connections>
+                                    <action selector="refreshWhenErrorOccur:" destination="eXD-rP-bjD" eventType="touchUpInside" id="CUs-8L-m0x"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="luW-Iw-Wbm" firstAttribute="centerY" secondItem="1em-cV-TKN" secondAttribute="centerY" id="9Ae-C0-Sbz"/>
                             <constraint firstItem="bg6-71-KeZ" firstAttribute="top" secondItem="UJS-I5-qLS" secondAttribute="bottom" id="Haf-DB-gRZ"/>
                             <constraint firstItem="UJS-I5-qLS" firstAttribute="top" secondItem="mic-G4-Ltb" secondAttribute="bottom" id="ITu-HZ-vI6"/>
                             <constraint firstItem="mic-G4-Ltb" firstAttribute="top" secondItem="G2v-yL-uqs" secondAttribute="bottom" id="V41-dn-Kf0"/>
                             <constraint firstItem="mic-G4-Ltb" firstAttribute="centerX" secondItem="1em-cV-TKN" secondAttribute="centerX" id="Vau-m3-Kb6"/>
                             <constraint firstItem="mic-G4-Ltb" firstAttribute="width" secondItem="1em-cV-TKN" secondAttribute="width" id="bM6-vR-EQc"/>
                             <constraint firstItem="UJS-I5-qLS" firstAttribute="width" secondItem="1em-cV-TKN" secondAttribute="width" id="cgg-hS-M1O"/>
+                            <constraint firstItem="luW-Iw-Wbm" firstAttribute="centerX" secondItem="1em-cV-TKN" secondAttribute="centerX" id="ntY-vh-u4y"/>
                             <constraint firstItem="UJS-I5-qLS" firstAttribute="centerX" secondItem="1em-cV-TKN" secondAttribute="centerX" id="sxc-02-g5P"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="7w0-7y-Q40"/>
                     <connections>
                         <outlet property="moviesCollectionView" destination="UJS-I5-qLS" id="iuN-Nf-pNq"/>
+                        <outlet property="refreshButton" destination="luW-Iw-Wbm" id="9qD-JS-SOa"/>
                         <outlet property="searchBar" destination="mic-G4-Ltb" id="nzE-vF-ZLU"/>
                     </connections>
                 </viewController>
@@ -161,7 +176,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="397.60000000000002" y="-358.4707646176912"/>
+            <point key="canvasLocation" x="626" y="-358"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="AEL-kK-j8a">
@@ -183,4 +198,7 @@
             <point key="canvasLocation" x="-386.39999999999998" y="367.46626686656674"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="refreshButton" width="16" height="16"/>
+    </resources>
 </document>
