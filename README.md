@@ -2,7 +2,11 @@
 
 **Flicks** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **10** hours spent in total
+Time spent: 
+**6** hours spent in Version 1.1
+**1** hours spent in Version 1.2
+**4** hours spent in Version 1.3
+
 
 ## User Stories
 
@@ -16,10 +20,10 @@ The following **required** functionality is complete:
 The following **optional** features are implemented:
 
 - [ ] User sees an error message when there's a networking error.
-- [ ] Movies are displayed using a CollectionView instead of a TableView.
-- [ ] User can search for a movie.
-- [ ] All images fade in as they are loading.
-- [ ] Customize the UI.
+- ☑️ Movies are displayed using a CollectionView instead of a TableView.
+- ☑️ User can search for a movie.
+- ☑️ All images fade in as they are loading.
+- ☑️ Customize the UI.
 
 ## Video Walkthrough 
 
@@ -32,6 +36,10 @@ version 1.1
 version 1.2 search activated
 
 <img src='https://github.com/sine27/Flicks/blob/master/demo/assign1-2search.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
+
+version 1.3 Collection view
+
+<img src='https://github.com/sine27/Flicks/blob/master/demo/assign1-3collection.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
 
 ## Notes
 
