@@ -12,18 +12,26 @@ Time spent:
 
 The following **required** functionality is complete:
 
-- ☑️ User can view a list of movies currently playing in theaters from The Movie Database.
-- ☑️ Poster images are loaded using the UIImageView category in the AFNetworking library.
-- ☑️ User sees a loading state while waiting for the movies API.
-- ☑️ User can pull to refresh the movie list.
+ ☑️ User can view a list of movies currently playing in theaters from The Movie Database. 
+ ☑️ Poster images are loaded using the UIImageView category in the AFNetworking library.
+ ☑️ User sees a loading state while waiting for the movies API.
+ ☑️ User can pull to refresh the movie list.
 
 The following **optional** features are implemented:
 
 - [ ] User sees an error message when there's a networking error.
-- ☑️ Movies are displayed using a CollectionView instead of a TableView.
-- ☑️ User can search for a movie.
-- ☑️ All images fade in as they are loading.
-- ☑️ Customize the UI.
+ ☑️ Movies are displayed using a CollectionView instead of a TableView.
+ ☑️ User can search for a movie.
+ ☑️ All images fade in as they are loading.
+ ☑️ Customize the UI.
+
+The following **additional** features are implemented:
+
+ ☑️ Search "Not Found" notification
+
+Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
+
+...
 
 ## Video Walkthrough 
 
