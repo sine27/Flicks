@@ -13,11 +13,11 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     let helper = HelperFunctions()
     
-// MARK : variables >>>>>
+    // MARK : variables >>>>>
     @IBOutlet weak var moviesCollectionView: UICollectionView!
     
     @IBOutlet weak var searchBar: UISearchBar!
-
+    
     @IBOutlet weak var refreshButton: UIButton!
     
     // All movies info from database
@@ -31,85 +31,28 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     // if seach bar is activated
     var searchActive = false
-    
-    let notifyLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 250, height: 50))
-    
-    let footerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 250, height: 50))
-// <<<<< variables
+    // <<<<< variables
     
     // hide keyboard by gesture
     @IBAction func onTap(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
     
-// MARK : helper functions
-    // re-send the request
-    func refresh(sender:AnyObject) {
-        request()
-    }
-    
-    // MARK : JSON request >>>>>
-    func request () {
-        
-        notifyLabel.alpha = 0
-        notifyLabel.removeFromSuperview()
-        
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
-        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
-        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
-            
-            if let error = error {
-                print(">>>>>> [URLDataTask completion]: \(error.localizedDescription)")
-                self.helper.stopActivityIndicator()
-                self.notifyLabel.text = "\(error.localizedDescription)"
-                self.notifyLabel.alpha = 1
-                self.notifyLabel.numberOfLines = 2
-                self.view.addSubview(self.notifyLabel)
-                sleep(5)
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.notifyLabel.center.y = self.notifyLabel.center.y - 70
-                })
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.refreshButton.alpha = 1
-                    self.refreshButton.isUserInteractionEnabled = true
-                })
-                
-            }
-            
-           else if let data = data {
-                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    
-                    self.movies = dataDictionary["results"] as! [NSDictionary]
-                    
-                    self.moviesCollectionView.reloadData()
-                    self.helper.stopActivityIndicator()
-                    if self.refreshControl.isRefreshing {
-                        self.refreshControl.endRefreshing()
-                    }
-                }
-            }
-        }
-        task.resume()
-    }
-    // <<<<< JSON request
-    
-// <<<<< helper functions
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        helper.subviewSetup(sender: self)
         
         // display activity indicator
         helper.activityIndicator(sender: self)
         
         // setup pull to refresh activity indicator
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh", attributes: [NSForegroundColorAttributeName: UIColor.init(white: 1, alpha: 1)])
-
+        
         refreshControl.addTarget(self, action: #selector(MoviesViewController.refresh(sender: )), for: UIControlEvents.valueChanged)
         moviesCollectionView.addSubview(refreshControl)
         
-        // setup
+        // setup collection view
         moviesCollectionView.delegate = self
         moviesCollectionView.dataSource = self
         
@@ -120,21 +63,14 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         layout.minimumLineSpacing = 0
         layout.itemSize = CGSize(width: itemWidth, height: (1.5 * itemWidth))
         
-        notifyLabel.numberOfLines = 1
-        notifyLabel.textColor = UIColor.init(white: 1, alpha: 0.6)
-        notifyLabel.font = UIFont(name:"HelveticaNeue;", size: 30.0)
-        notifyLabel.textAlignment = NSTextAlignment.center
-        notifyLabel.center = self.view.center
-        notifyLabel.contentMode = UIViewContentMode.scaleAspectFit
-        notifyLabel.alpha = 0
-        
+        // setup refresh button
         refreshButton.alpha = 0
         self.refreshButton.isUserInteractionEnabled = false
         
         // requst for data
         request()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -144,13 +80,10 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         
         if(searchActive) {
             if searchResults.count == 0 && searchBar.text != "" {
-                notifyLabel.text = "Not Found"
-                self.notifyLabel.center.y = self.notifyLabel.center.y
-                notifyLabel.alpha = 1
-                self.view.addSubview(notifyLabel)
+                let notifyText = "Not Found"
+                helper.showNotifyLabelCenter(sender: self, notificationLabel: notifyText, notifyType: 0)
             } else {
-                notifyLabel.alpha = 0
-                notifyLabel.removeFromSuperview()
+                helper.removeNotifyLabelCenter()
             }
             return searchResults.count
         }
@@ -160,7 +93,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // Access
         let cell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as! MovieCollectionViewCell
-
+        
         cell.layer.borderWidth = 0
         
         if refreshControl.isRefreshing {
@@ -190,34 +123,19 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        footerLabel.numberOfLines = 1
-        footerLabel.textColor = UIColor.init(white: 1, alpha: 0.6)
-        footerLabel.font = UIFont(name:"HelveticaNeue;", size: 30.0)
-        footerLabel.text = "No More Results"
-        footerLabel.textAlignment = NSTextAlignment.center
-        footerLabel.contentMode = UIViewContentMode.scaleAspectFit
-        footerLabel.alpha = 0
-        
         if ((scrollView.contentOffset.y + scrollView.frame.size.height - 50) >= scrollView.contentSize.height) && !searchActive
         {
-
             let footerHeight = scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentSize.height
+            let footerPositionY = self.moviesCollectionView.frame.maxY - (footerHeight / 2)
+            let footerText = "No More Results"
             
-            footerLabel.center.y = self.moviesCollectionView.frame.maxY - (footerHeight / 2)
-            footerLabel.center.x = self.view.center.x
-
-            footerLabel.alpha = 1
-            self.view.addSubview(footerLabel)
+            helper.showNotifyLabelFooter(sender : self, notificationLabel: footerText, positionY: footerPositionY)
         } else {
-            
-            UIView.animate(withDuration: 0.5, animations: {
-                self.footerLabel.alpha = 0
-            })
-            self.view.willRemoveSubview(footerLabel)
+            helper.removeNotifyLabelFooter()
         }
     }
     
-// MARK : search bar controller >>>>>
+    // MARK : search bar controller >>>>>
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchActive = true;
         self.moviesCollectionView.reloadData()
@@ -228,12 +146,15 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
         searchActive = false;
         searchResults = []
         searchBar.text = ""
+        
         searchBar.resignFirstResponder()
-        notifyLabel.alpha = 0
-        notifyLabel.removeFromSuperview()
+        
+        helper.removeNotifyLabelCenter()
+        
         self.moviesCollectionView.reloadData()
     }
     
@@ -262,16 +183,69 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         searchActive = true;
         self.moviesCollectionView.reloadData()
     }
-// <<<<< search bar controller
-
+    // <<<<< search bar controller
+    
     @IBAction func refreshWhenErrorOccur(_ sender: Any) {
         
         self.refreshButton.alpha = 0
         self.refreshButton.isUserInteractionEnabled = true
-        notifyLabel.center.y = self.view.center.y
+        helper.subviewSetup(sender: self)
         helper.activityIndicator(sender: self)
         refresh(sender: self)
     }
-
-
+    
+    // MARK : helper functions >>>>>
+    // re-send the request
+    func refresh(sender:AnyObject) {
+        request()
+    }
+    
+    // MARK : JSON request >>>
+    func request () {
+        
+        helper.removeNotifyLabelCenter()
+        
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
+        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            
+            self.helper.stopActivityIndicator()
+            
+            if let error = error {
+                
+                self.searchBar.isUserInteractionEnabled = false
+                
+                let notifyText = "\(error.localizedDescription)"
+                self.helper.showNotifyLabelCenter(sender: self, notificationLabel: notifyText, notifyType: 1)
+                
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.refreshButton.alpha = 1
+                })
+                self.refreshButton.isUserInteractionEnabled = true
+                
+            }
+                
+            else if let data = data {
+                
+                self.searchBar.isUserInteractionEnabled = true
+                
+                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                    
+                    self.movies = dataDictionary["results"] as! [NSDictionary]
+                    
+                    self.moviesCollectionView.reloadData()
+                    
+                    if self.refreshControl.isRefreshing {
+                        self.refreshControl.endRefreshing()
+                    }
+                }
+            }
+        }
+        task.resume()
+    }
+    // <<< JSON request
+    
+    // <<<<< helper functions
 }

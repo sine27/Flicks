@@ -108,14 +108,10 @@
 		250C3D311E4416660058C440 /* FlicksCollection */ = {
 			isa = PBXGroup;
 			children = (
-				250C3D321E4416660058C440 /* AppDelegate.swift */,
-				250C3D361E4416660058C440 /* Main.storyboard */,
-				250C3D391E4416660058C440 /* Assets.xcassets */,
-				250C3D3B1E4416660058C440 /* LaunchScreen.storyboard */,
-				250C3D3E1E4416660058C440 /* Info.plist */,
-				25FCA1111E441FDA009DA259 /* MoviesViewController.swift */,
-				25FCA1131E44219F009DA259 /* MovieCollectionViewCell.swift */,
-				25FCA1191E442474009DA259 /* HelperFunctions.swift */,
+				25DD78FF1E479C5B0070FAC6 /* View Controller */,
+				25DD79001E479C880070FAC6 /* View Cell */,
+				25DD79011E479CB10070FAC6 /* Helper */,
+				25DD79021E479CCC0070FAC6 /* Storyboard */,
 			);
 			path = FlicksCollection;
 			sourceTree = "<group>";
@@ -136,6 +132,42 @@
 				250C3D541E4416660058C440 /* Info.plist */,
 			);
 			path = FlicksCollectionUITests;
+			sourceTree = "<group>";
+		};
+		25DD78FF1E479C5B0070FAC6 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				25FCA1111E441FDA009DA259 /* MoviesViewController.swift */,
+			);
+			name = "View Controller";
+			sourceTree = "<group>";
+		};
+		25DD79001E479C880070FAC6 /* View Cell */ = {
+			isa = PBXGroup;
+			children = (
+				25FCA1131E44219F009DA259 /* MovieCollectionViewCell.swift */,
+			);
+			name = "View Cell";
+			sourceTree = "<group>";
+		};
+		25DD79011E479CB10070FAC6 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				250C3D321E4416660058C440 /* AppDelegate.swift */,
+				25FCA1191E442474009DA259 /* HelperFunctions.swift */,
+				250C3D391E4416660058C440 /* Assets.xcassets */,
+				250C3D3E1E4416660058C440 /* Info.plist */,
+			);
+			name = Helper;
+			sourceTree = "<group>";
+		};
+		25DD79021E479CCC0070FAC6 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				250C3D361E4416660058C440 /* Main.storyboard */,
+				250C3D3B1E4416660058C440 /* LaunchScreen.storyboard */,
+			);
+			name = Storyboard;
 			sourceTree = "<group>";
 		};
 		9481BFEEF6D52E558A68A74F /* Pods */ = {

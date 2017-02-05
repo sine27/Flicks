@@ -134,7 +134,7 @@
                                     <constraint firstAttribute="height" constant="60" id="g3Z-AJ-wca"/>
                                 </constraints>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" backgroundImage="refreshButton"/>
+                                <state key="normal" backgroundImage="refreshButtonImg"/>
                                 <connections>
                                     <action selector="refreshWhenErrorOccur:" destination="eXD-rP-bjD" eventType="touchUpInside" id="CUs-8L-m0x"/>
                                 </connections>
@@ -199,6 +199,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="refreshButton" width="16" height="16"/>
+        <image name="refreshButtonImg" width="16" height="16"/>
     </resources>
 </document>
