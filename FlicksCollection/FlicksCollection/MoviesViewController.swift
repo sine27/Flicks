@@ -101,11 +101,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     // custom navigation bar
     func navigationBarSetup() {
-        if searchBar.isHidden == false {
-            self.navigationController?.isNavigationBarHidden = true
-        } else {
-            self.navigationController?.isNavigationBarHidden = false
-        }
         
         self.navigationController?.navigationBar.topItem?.title = ""
 
@@ -116,6 +111,14 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         self.navigationController?.navigationBar.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
         // Set translucent. (Default value is already true, so this can be removed if desired.)
         self.navigationController?.navigationBar.isTranslucent = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if searchBar.isHidden == false {
+            self.navigationController?.isNavigationBarHidden = true
+        } else {
+            self.navigationController?.isNavigationBarHidden = false
+        }
     }
     
     override func viewDidLoad() {
