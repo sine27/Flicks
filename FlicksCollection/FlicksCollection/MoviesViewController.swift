@@ -221,10 +221,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                 if let indexPath = moviesCollectionView.indexPath(for: cell) {
                     var movie : NSDictionary!
                     
-                    
-                    print(searchActive)
-                    
-                    
                     if (searchActive) {
                         movie = searchResults[indexPath.row]
                     } else {
