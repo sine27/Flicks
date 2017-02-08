@@ -220,6 +220,11 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
             if let cell = sender as? UICollectionViewCell {
                 if let indexPath = moviesCollectionView.indexPath(for: cell) {
                     var movie : NSDictionary!
+                    
+                    
+                    print(searchActive)
+                    
+                    
                     if (searchActive) {
                         movie = searchResults[indexPath.row]
                     } else {
@@ -263,10 +268,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         self.moviesCollectionView.reloadData()
     }
     
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchActive = false;
-    }
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
         UIView.animate(withDuration: 0.6) {
@@ -288,7 +289,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        searchActive = false;
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
