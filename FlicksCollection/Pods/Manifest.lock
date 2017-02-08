@@ -14,13 +14,16 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - Cosmos (8.0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
+  - Cosmos (~> 8.0)
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  Cosmos: 007c0b8e33a85e5363911bdd933571bbe221f7ef
 
-PODFILE CHECKSUM: 5b72639941ecebd5f6f32b042054e19548c6c218
+PODFILE CHECKSUM: f83034296fc691df055f092c012bc1cb5218deb1
 
 COCOAPODS: 1.1.1

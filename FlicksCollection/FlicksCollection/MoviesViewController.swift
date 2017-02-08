@@ -19,7 +19,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     @IBOutlet weak var searchBar: UISearchBar!
     
     @IBOutlet weak var refreshButton: UIButton!
-    
+
     // All movies info from database
     var movies: [NSDictionary] = []
     
@@ -33,9 +33,19 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     var searchActive = false
     // <<<<< variables
     
-    // hide keyboard by gesture
-    @IBAction func onTap(_ sender: UITapGestureRecognizer) {
-        view.endEditing(true)
+    // custom navigation bar 
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+        
+        self.navigationController?.navigationBar.topItem?.title = ""
+
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        // Sets shadow (line below the bar) to a blank image
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        // Sets the translucent background color
+        self.navigationController?.navigationBar.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
+        // Set translucent. (Default value is already true, so this can be removed if desired.)
+        self.navigationController?.navigationBar.isTranslucent = true
     }
     
     override func viewDidLoad() {
@@ -66,7 +76,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         // setup refresh button
         refreshButton.alpha = 0
         self.refreshButton.isUserInteractionEnabled = false
-        
+
         // requst for data
         request()
     }
@@ -120,6 +130,26 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         
         return cell
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if (segue.identifier == "showMovieDetail") {
+            let vc = segue.destination as! MovieDetailViewController
+            
+            if let cell = sender as? UICollectionViewCell {
+                if let indexPath = moviesCollectionView.indexPath(for: cell) {
+                    var movie : NSDictionary!
+                    if (searchActive) {
+                        movie = searchResults[indexPath.row]
+                    } else {
+                        movie = movies[indexPath.row]
+                    }
+                    vc.movie = movie
+                }
+            }
+        }
+    }
+
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
@@ -224,9 +254,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                     self.refreshButton.alpha = 1
                 })
                 self.refreshButton.isUserInteractionEnabled = true
-                
             }
-                
+            
             else if let data = data {
                 
                 self.searchBar.isUserInteractionEnabled = true
