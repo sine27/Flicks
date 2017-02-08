@@ -9,7 +9,7 @@
 import UIKit
 import AFNetworking
 
-class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource,   UICollectionViewDelegateFlowLayout {
+class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource,   UICollectionViewDelegateFlowLayout  {
     
     let helper = HelperFunctions()
     
@@ -20,6 +20,22 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     @IBOutlet weak var refreshButton: UIButton!
 
+    @IBOutlet weak var collectionToSearch: NSLayoutConstraint!
+    
+    @IBOutlet weak var filterButton: UIButton!
+    
+    @IBOutlet weak var dropdownView: UIView!
+    
+    @IBOutlet weak var dropDownImg: UIImageView!
+
+    @IBOutlet weak var recentButton: UIButton!
+    
+    @IBOutlet weak var popularityButton: UIButton!
+    
+    @IBOutlet weak var rateButton: UIButton!
+    
+    
+    
     // All movies info from database
     var movies: [NSDictionary] = []
     
@@ -31,11 +47,65 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     // if seach bar is activated
     var searchActive = false
+    
+    var isDropped = false
+    
     // <<<<< variables
     
-    // custom navigation bar 
-    override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.isNavigationBarHidden = true
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        
+        let upimg = UIImage(named: "up")
+        
+        if (isDropped) {
+            hideDrodown()
+        } else {
+            UIView.animate(withDuration: 0.5) {
+                self.loadViewIfNeeded()
+                self.filterButton.setImage(upimg, for: .normal)
+                self.dropdownView.isHidden = false
+            }
+            isDropped = true
+        }
+    }
+    
+    func hideDrodown() {
+        let downimg = UIImage(named: "down")
+        UIView.animate(withDuration: 0.5) {
+            self.loadViewIfNeeded()
+            self.filterButton.setImage(downimg, for: .normal)
+            self.dropdownView.isHidden = true
+        }
+        isDropped = false
+    }
+    
+    @IBAction func recentTapped(_ sender: Any) {
+        
+        filterButton.setTitle("Date ", for: .normal)
+        hideDrodown()
+        sortKey(byKey: "release_date")
+    }
+
+    @IBAction func popularTapped(_ sender: Any) {
+        
+        filterButton.setTitle("Popularity ", for: .normal)
+        hideDrodown()
+        sortKey(byKey: "popularity")
+    }
+    
+    @IBAction func rateTapped(_ sender: Any) {
+        
+        filterButton.setTitle("Rate ", for: .normal)
+        hideDrodown()
+        sortKey(byKey: "vote_average")
+    }
+    
+    // custom navigation bar
+    func navigationBarSetup() {
+        if searchBar.isHidden == false {
+            self.navigationController?.isNavigationBarHidden = true
+        } else {
+            self.navigationController?.isNavigationBarHidden = false
+        }
         
         self.navigationController?.navigationBar.topItem?.title = ""
 
@@ -76,6 +146,14 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         // setup refresh button
         refreshButton.alpha = 0
         self.refreshButton.isUserInteractionEnabled = false
+        
+        searchBar.isHidden = true
+        collectionToSearch.constant = -44
+        navigationBarSetup()
+        
+        dropDownImg.layer.masksToBounds = true
+        dropDownImg.layer.cornerRadius = 10
+        dropdownView.isHidden = true
 
         // requst for data
         request()
@@ -166,6 +244,17 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     }
     
     // MARK : search bar controller >>>>>
+    
+    @IBAction func searchActivated(_ sender: Any) {
+        UIView.animate(withDuration: 0.6) {
+            self.loadViewIfNeeded()
+            self.collectionToSearch.constant = 0
+            self.searchBar.isHidden = false
+            self.navigationController?.isNavigationBarHidden = true
+            self.searchBar.becomeFirstResponder()
+        }
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchActive = true;
         self.moviesCollectionView.reloadData()
@@ -177,6 +266,12 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
+        UIView.animate(withDuration: 0.6) {
+            self.loadViewIfNeeded()
+            self.collectionToSearch.constant = -44
+            self.searchBar.isHidden = true
+            self.navigationController?.isNavigationBarHidden = false
+        }
         searchActive = false;
         searchResults = []
         searchBar.text = ""
@@ -225,6 +320,36 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     }
     
     // MARK : helper functions >>>>>
+    
+    func sortKey(byKey : String) {
+        
+        if byKey == "release_date" {
+            sortByDate()
+        } else {
+            movies.sort {
+                item1, item2 in
+                let data1 = item1[byKey] as! Double
+                let data2 = item2[byKey] as! Double
+                return data1 > data2
+            }
+        }
+        moviesCollectionView.reloadData()
+    }
+    
+    func sortByDate () {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        movies.sort {
+            item1, item2 in
+            let data1 = item1["release_date"] as! String
+            let data2 = item2["release_date"] as! String
+            let date1 = dateFormatter.date(from: data1)
+            let date2 = dateFormatter.date(from: data2)
+            return date1! > date2!
+        }
+    }
+    
     // re-send the request
     func refresh(sender:AnyObject) {
         request()
