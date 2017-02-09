@@ -59,35 +59,28 @@ version 1.4 "no more result" symbol & timeout notification and refresh enabled
 
 <img src='https://github.com/sine27/Flicks/blob/master/demo/assign1-4timeout.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
 
-version 1.5 detail view enabled with animation and custom navigation bar & filter (change by sorting key)
-
-<img src='https://github.com/sine27/Flicks/blob/master/demo/assign1-5detail&filter.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
-
-## Notes
-
-Describe any challenges encountered while building the app.
-
 # Project 2 - *Flicks*
 
 **Flicks** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
 Time spent: 
 
-- **7** hours spent in Version 1.5
+- **7** hours spent in Version 2.1
+- **3** hours spent in Version 2.2
 
-**7** hours spent in total
+**10** hours spent in total
 
 ## User Stories
 
 The following **required** functionality is completed:
 
 - ☑️ User can view movie details by tapping on a cell.
-- [ ] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
+- ☑️ User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
 - ☑️ Customize the selection effect of the cell.
 
 The following **optional** features are implemented:
 
-- [ ] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
+- ☑️ For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
 - ☑️ Customize the navigation bar.
 
 The following **additional** features are implemented:
@@ -95,19 +88,19 @@ The following **additional** features are implemented:
 - ☑️ enabled hide and show the detail with animation
 - ☑️ scroll view on detail view
 - ☑️ sort the movies by swiching filter keys
-
-Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
-
-1. 
-2. 
+- ☑️ zooming image enabled
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-version 1.5 detail view enabled with animation and custom navigation bar & filter (change by sorting key)
+version 2.1 detail view enabled with animation and custom navigation bar & filter (change by sorting key)
 
-<img src='https://github.com/sine27/Flicks/blob/master/demo/assign1-5detail&filter.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
+<img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-1detail&filter.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
+
+version 2.2 tab view & zoom image
+
+<img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-2tabView.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
 
 ## Notes
 
