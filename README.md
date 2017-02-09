@@ -58,7 +58,7 @@ version 1.4 "no more result" symbol & timeout notification and refresh enabled
 
 <img src='https://github.com/sine27/Flicks/blob/master/demo/assign1-4timeout.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
 
-# Project 2 - *Flicks*
+# Project 2 - *Flicks* Part 2
 
 **Flicks** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
@@ -103,7 +103,55 @@ version 2.2 tab view & zoom image
 
 ## Notes
 
-Assigning data is difficult. I should pay a lot attention on name of a key. Animation sometime conflicked with each other and make the view strange. Gesture may affect tableview and collectionview performance.
+```swift
+// CollectionView Layout
+let layout = self.moviesCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
+let itemWidth = self.view.frame.width / 2
+layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+layout.minimumInteritemSpacing = 0
+layout.minimumLineSpacing = 0
+layout.itemSize = CGSize(width: itemWidth, height: (1.5 * itemWidth))
+        
+// Sort Date
+movies.sort {
+    item1, item2 in
+    let data1 = item1[key] as! String
+    let data2 = item2[key] as! String
+    let date1 = dateFormatter.date(from: data1)
+    let date2 = dateFormatter.date(from: data2)
+    return date1! > date2!
+}
+
+// Transparent NavigationBar
+self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+// Sets shadow (line below the bar) to a blank image
+self.navigationController?.navigationBar.shadowImage = UIImage()
+// Sets the translucent background color
+self.navigationController?.navigationBar.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
+// Set translucent. (Default value is already true, so this can be removed if desired.)
+self.navigationController?.navigationBar.isTranslucent = true
+
+// Scroll View Layout ignoring NavigationBar & BottomBar
+self.automaticallyAdjustsScrollViewInsets = false
+
+// Animation
+UIView.animate(withDuration: 1.0, animations: {
+    subView.alpha = 0
+}, completion: { (finished: Bool) -> Void in
+    subView.removeFromSuperview()
+})
+
+// Round Angle
+contentView.layer.masksToBounds = true
+contentView.layer.cornerRadius = radius
+
+// Blur View
+
+let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+let blurView = UIVisualEffectView(effect : blurEffect)
+blurView.frame = moviePostImg.bounds
+image.addSubview(blurView)
+```
 
 ## License
 
