@@ -56,7 +56,8 @@ layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
 layout.minimumInteritemSpacing = 0
 layout.minimumLineSpacing = 0
 layout.itemSize = CGSize(width: itemWidth, height: (1.5 * itemWidth))
-        
+  
+
 // Sort Date
 movies.sort {
     item1, item2 in
@@ -67,6 +68,7 @@ movies.sort {
     return date1! > date2!
 }
 
+
 // Transparent NavigationBar
 self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
 // Sets shadow (line below the bar) to a blank image
@@ -76,8 +78,10 @@ self.navigationController?.navigationBar.backgroundColor = UIColor(red: 0.0, gre
 // Set translucent. (Default value is already true, so this can be removed if desired.)
 self.navigationController?.navigationBar.isTranslucent = true
 
+
 // Scroll View Layout ignoring NavigationBar & BottomBar
 self.automaticallyAdjustsScrollViewInsets = false
+
 
 // Animation
 UIView.animate(withDuration: 1.0, animations: {
@@ -86,15 +90,31 @@ UIView.animate(withDuration: 1.0, animations: {
     subView.removeFromSuperview()
 })
 
+
 // Round Angle
 contentView.layer.masksToBounds = true
 contentView.layer.cornerRadius = radius
+
 
 // Blur View
 let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
 let blurView = UIVisualEffectView(effect : blurEffect)
 blurView.frame = moviePostImg.bounds
 image.addSubview(blurView)
+
+
+// Geture : Tap outside to hide
+var tapGesture = UITapGestureRecognizer()
+func whenGestureNeeded () {
+    tapGesture = UITapGestureRecognizer(target: self, action: #selector(MoviesViewController.autoHideWhenTapOutside(sender: )))
+        viewTapped.addGestureRecognizer(tapGesture)
+    }
+}
+func autoHideDropdownWhenTapOutside(sender: UITapGestureRecognizer) {
+    hideTargetView()
+    viewTapped.removeGestureRecognizer(tapGesture)
+}
+
 ```
 
 ## License
