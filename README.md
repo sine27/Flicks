@@ -146,7 +146,6 @@ contentView.layer.masksToBounds = true
 contentView.layer.cornerRadius = radius
 
 // Blur View
-
 let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
 let blurView = UIVisualEffectView(effect : blurEffect)
 blurView.frame = moviePostImg.bounds
