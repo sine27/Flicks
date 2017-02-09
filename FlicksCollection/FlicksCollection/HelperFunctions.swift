@@ -103,4 +103,42 @@ class HelperFunctions: NSObject {
         })
         footerLabel.removeFromSuperview()
     }
+    
+    // custom navigation bar
+    open func navigationBarSetup(sender : UIViewController) {
+        
+        sender.navigationController!.navigationBar.topItem?.title = ""
+        
+        sender.navigationController!.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        // Sets shadow (line below the bar) to a blank image
+        sender.navigationController!.navigationBar.shadowImage = UIImage()
+        // Sets the translucent background color
+        sender.navigationController!.navigationBar.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
+        // Set translucent. (Default value is already true, so this can be removed if desired.)
+        sender.navigationController!.navigationBar.isTranslucent = true
+    }
+    
+    // setup collection view layout
+    open func collectionViewLayoutSetup (collectionView : UICollectionView, view : UIViewController) {
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        let itemWidth = view.view.frame.width / 2
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        layout.itemSize = CGSize(width: itemWidth, height: (1.5 * itemWidth))
+    }
+    
+    // footer setup
+    open func footerSetup (scrollView : UIScrollView, collectionView : UICollectionView, view : UIViewController, label : String, searchActive : Bool) {
+        if ((scrollView.contentOffset.y + scrollView.frame.size.height - 50) >= scrollView.contentSize.height) && !searchActive
+        {
+            let footerHeight = scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentSize.height
+            let footerPositionY = collectionView.frame.maxY - (footerHeight / 2)
+            let footerText = label
+            
+            showNotifyLabelFooter(sender : view, notificationLabel: footerText, positionY: footerPositionY)
+        } else {
+            removeNotifyLabelFooter()
+        }
+    }
 }

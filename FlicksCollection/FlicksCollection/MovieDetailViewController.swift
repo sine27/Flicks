@@ -126,7 +126,12 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
                 self.moviePostImg.alpha = 0.0
                 self.moviePostImg.image = smallImage;
                 UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                    self.moviePostImg.alpha = 1.0
+                    
+                    if self.isContentShowed {
+                        self.moviePostImg.alpha = 0.6
+                    } else {
+                        self.moviePostImg.alpha = 1.0
+                    }
                 }, completion: { (sucess) -> Void in
                     self.moviePostImg.setImageWith(
                         largeImageRequest,

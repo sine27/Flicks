@@ -34,8 +34,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     @IBOutlet weak var rateButton: UIButton!
     
-    
-    
     // All movies info from database
     var movies: [NSDictionary] = []
     
@@ -45,6 +43,9 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     // pull to refresh
     let refreshControl = UIRefreshControl()
     
+    // tap gesture
+    var tapGesture = UITapGestureRecognizer()
+    
     // if seach bar is activated
     var searchActive = false
     
@@ -52,12 +53,12 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     // <<<<< variables
     
+    // MARK : Dropdown Menu For Sorting
     @IBAction func filterButtonTapped(_ sender: Any) {
-        
         let upimg = UIImage(named: "up")
-        
         if (isDropped) {
             hideDrodown()
+            moviesCollectionView.removeGestureRecognizer(tapGesture)
         } else {
             UIView.animate(withDuration: 0.5) {
                 self.loadViewIfNeeded()
@@ -65,33 +66,39 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                 self.dropdownView.isHidden = false
             }
             isDropped = true
+            
+            tapGesture = UITapGestureRecognizer(target: self, action: #selector(MoviesViewController.autoHideDropdownWhenTapOutside(sender: )))
+            moviesCollectionView.addGestureRecognizer(tapGesture)
         }
+    }
+    
+    func autoHideDropdownWhenTapOutside(sender: UITapGestureRecognizer) {
+        hideDrodown()
+        moviesCollectionView.removeGestureRecognizer(tapGesture)
     }
     
     func hideDrodown() {
         let downimg = UIImage(named: "down")
+        isDropped = false
         UIView.animate(withDuration: 0.5) {
             self.loadViewIfNeeded()
             self.filterButton.setImage(downimg, for: .normal)
             self.dropdownView.isHidden = true
         }
-        isDropped = false
     }
     
+    // Sort when key button tapped
     @IBAction func recentTapped(_ sender: Any) {
-        
         filterButton.setTitle("Date ", for: .normal)
         hideDrodown()
         sortKey(byKey: "release_date")
     }
 
     @IBAction func popularTapped(_ sender: Any) {
-        
         filterButton.setTitle("Popularity ", for: .normal)
         hideDrodown()
         sortKey(byKey: "popularity")
     }
-    
     @IBAction func rateTapped(_ sender: Any) {
         
         filterButton.setTitle("Rate ", for: .normal)
@@ -99,20 +106,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         sortKey(byKey: "vote_average")
     }
     
-    // custom navigation bar
-    func navigationBarSetup() {
-        
-        self.navigationController?.navigationBar.topItem?.title = ""
-
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        // Sets shadow (line below the bar) to a blank image
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        // Sets the translucent background color
-        self.navigationController?.navigationBar.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
-        // Set translucent. (Default value is already true, so this can be removed if desired.)
-        self.navigationController?.navigationBar.isTranslucent = true
-    }
-    
+    // hide navigationBar when searching
     override func viewWillAppear(_ animated: Bool) {
         if searchBar.isHidden == false {
             self.navigationController?.isNavigationBarHidden = true
@@ -121,39 +115,41 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         }
     }
     
+    // view setup
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // setup collection view
+        moviesCollectionView.delegate = self
+        moviesCollectionView.dataSource = self
+        
+        // All subviews : labels and spinner
         helper.subviewSetup(sender: self)
+        
+        // cunstom navigation bar
+        helper.navigationBarSetup(sender : self)
         
         // display activity indicator
         helper.activityIndicator(sender: self)
         
         // setup pull to refresh activity indicator
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh", attributes: [NSForegroundColorAttributeName: UIColor.init(white: 1, alpha: 1)])
-        
         refreshControl.addTarget(self, action: #selector(MoviesViewController.refresh(sender: )), for: UIControlEvents.valueChanged)
         moviesCollectionView.addSubview(refreshControl)
         
-        // setup collection view
-        moviesCollectionView.delegate = self
-        moviesCollectionView.dataSource = self
-        
-        let layout = self.moviesCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        let itemWidth = self.view.frame.width / 2
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
-        layout.itemSize = CGSize(width: itemWidth, height: (1.5 * itemWidth))
+        // setup collection view layout
+        helper.collectionViewLayoutSetup(collectionView: self.moviesCollectionView, view : self)
         
         // setup refresh button
         refreshButton.alpha = 0
         self.refreshButton.isUserInteractionEnabled = false
         
         searchBar.isHidden = true
+
+        // hide searchBar when search button not clicked
         collectionToSearch.constant = -44
-        navigationBarSetup()
         
+        // dropdown menu setup
         dropDownImg.layer.masksToBounds = true
         dropDownImg.layer.cornerRadius = 10
         dropdownView.isHidden = true
@@ -232,19 +228,9 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         }
     }
 
-    
+    // show footer if needed
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        if ((scrollView.contentOffset.y + scrollView.frame.size.height - 50) >= scrollView.contentSize.height) && !searchActive
-        {
-            let footerHeight = scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentSize.height
-            let footerPositionY = self.moviesCollectionView.frame.maxY - (footerHeight / 2)
-            let footerText = "No More Results"
-            
-            helper.showNotifyLabelFooter(sender : self, notificationLabel: footerText, positionY: footerPositionY)
-        } else {
-            helper.removeNotifyLabelFooter()
-        }
+        helper.footerSetup(scrollView: scrollView, collectionView: moviesCollectionView, view: self, label: "No More Results", searchActive: searchActive)
     }
     
     // MARK : search bar controller >>>>>
@@ -260,8 +246,32 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchActive = true;
+        searchActive = true
         self.moviesCollectionView.reloadData()
+        
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(MoviesViewController.autoHideKeyboardWhenTapOutside(sender: )))
+        moviesCollectionView.addGestureRecognizer(tapGesture)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        moviesCollectionView.removeGestureRecognizer(tapGesture)
+        
+        if searchBar.text == "" {
+            searchActive = false
+            moviesCollectionView.reloadData()
+            
+            // show navigationBar and hide searchBar
+            UIView.animate(withDuration: 0.6) {
+                self.loadViewIfNeeded()
+                self.collectionToSearch.constant = -44
+                self.searchBar.isHidden = true
+                self.navigationController?.isNavigationBarHidden = false
+            }
+        }
+    }
+    
+    func autoHideKeyboardWhenTapOutside(sender: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

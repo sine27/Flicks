@@ -31,24 +31,15 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     // pull to refresh
     let refreshControl = UIRefreshControl()
     
+    // tap gesture
+    var tapGesture = UITapGestureRecognizer()
+    
     // if seach bar is activated
     var searchActive = false
     // <<<<< variables
     
-    // custom navigation bar
-    func navigationBarSetup() {
-        
-        self.navigationController?.navigationBar.topItem?.title = ""
-        
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        // Sets shadow (line below the bar) to a blank image
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        // Sets the translucent background color
-        self.navigationController?.navigationBar.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
-        // Set translucent. (Default value is already true, so this can be removed if desired.)
-        self.navigationController?.navigationBar.isTranslucent = true
-    }
     
+    // hide navigationBar when searching
     override func viewWillAppear(_ animated: Bool) {
         if searchBar.isHidden == false {
             self.navigationController?.isNavigationBarHidden = true
@@ -57,38 +48,39 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
         }
     }
     
+    // view setup
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // setup collection view
+        moviesCollectionView.delegate = self
+        moviesCollectionView.dataSource = self
+        
+        // All subviews : labels and spinner
         helper.subviewSetup(sender: self)
+        
+        // cunstom navigation bar
+        helper.navigationBarSetup(sender : self)
         
         // display activity indicator
         helper.activityIndicator(sender: self)
         
         // setup pull to refresh activity indicator
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh", attributes: [NSForegroundColorAttributeName: UIColor.init(white: 1, alpha: 1)])
-        
         refreshControl.addTarget(self, action: #selector(MoviesViewController.refresh(sender: )), for: UIControlEvents.valueChanged)
         moviesCollectionView.addSubview(refreshControl)
         
-        // setup collection view
-        moviesCollectionView.delegate = self
-        moviesCollectionView.dataSource = self
-        
-        let layout = self.moviesCollectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        let itemWidth = self.view.frame.width / 2
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
-        layout.itemSize = CGSize(width: itemWidth, height: (1.5 * itemWidth))
+        // setup collection view layout
+        helper.collectionViewLayoutSetup(collectionView: self.moviesCollectionView, view : self)
         
         // setup refresh button
         refreshButton.alpha = 0
         self.refreshButton.isUserInteractionEnabled = false
         
         searchBar.isHidden = true
+        
+        // hide searchBar when search button not clicked
         collectionToSearch.constant = -44
-        navigationBarSetup()
         
         // requst for data
         request()
@@ -163,19 +155,9 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
         }
     }
     
-    
+    // show footer if needed
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        if ((scrollView.contentOffset.y + scrollView.frame.size.height - 50) >= scrollView.contentSize.height) && !searchActive
-        {
-            let footerHeight = scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentSize.height
-            let footerPositionY = self.moviesCollectionView.frame.maxY - (footerHeight / 2)
-            let footerText = "No More Results"
-            
-            helper.showNotifyLabelFooter(sender : self, notificationLabel: footerText, positionY: footerPositionY)
-        } else {
-            helper.removeNotifyLabelFooter()
-        }
+        helper.footerSetup(scrollView: scrollView, collectionView: moviesCollectionView, view: self, label: "No More Results", searchActive: searchActive)
     }
     
     // MARK : search bar controller >>>>>
@@ -194,7 +176,24 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchActive = true;
         self.moviesCollectionView.reloadData()
+        
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(MoviesViewController.autoHideKeyboardWhenTapOutside(sender: )))
+        moviesCollectionView.addGestureRecognizer(tapGesture)
     }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        moviesCollectionView.removeGestureRecognizer(tapGesture)
+        
+        if searchBar.text == "" {
+            searchActive = false
+            moviesCollectionView.reloadData()
+        }
+    }
+    
+    func autoHideKeyboardWhenTapOutside(sender: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         
