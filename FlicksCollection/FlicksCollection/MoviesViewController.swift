@@ -157,7 +157,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         dropDownImg.layer.masksToBounds = true
         dropDownImg.layer.cornerRadius = 10
         dropdownView.isHidden = true
-
+        
         // requst for data
         request()
     }
@@ -351,6 +351,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     // re-send the request
     func refresh(sender:AnyObject) {
+        filterButton.setTitle("Filter ", for: .normal)
         request()
     }
     
@@ -389,6 +390,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                     self.movies = dataDictionary["results"] as! [NSDictionary]
                     
                     self.moviesCollectionView.reloadData()
+                    
+                    self.tabBarController?.tabBar.items?[0].badgeValue = "\(self.movies.count)"
                     
                     if self.refreshControl.isRefreshing {
                         self.refreshControl.endRefreshing()
