@@ -8,7 +8,6 @@ Time spent:
 - **1** hours spent in Version 1.2
 - **4** hours spent in Version 1.3
 - **3** hours spent in Version 1.4
-- **7** hours spent in Version 1.5
 
 **14** hours spent in total
 
