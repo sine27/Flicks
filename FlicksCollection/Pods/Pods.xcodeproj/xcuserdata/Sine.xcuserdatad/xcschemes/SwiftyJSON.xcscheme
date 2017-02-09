@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'C3B0D4ADAAB95D2754E11D3C6B547D09'
-               BlueprintName = 'DropDownMenuKit'
+               BlueprintIdentifier = 'C1437B3E9B803D622747327976EDB7EB'
+               BlueprintName = 'SwiftyJSON'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'DropDownMenuKit.framework'>
+               BuildableName = 'SwiftyJSON.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

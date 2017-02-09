@@ -13,6 +13,7 @@
 		250C3D481E4416660058C440 /* FlicksCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250C3D471E4416660058C440 /* FlicksCollectionTests.swift */; };
 		250C3D531E4416660058C440 /* FlicksCollectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250C3D521E4416660058C440 /* FlicksCollectionUITests.swift */; };
 		252F626E1E4BBC81000D818E /* TopMoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252F626D1E4BBC81000D818E /* TopMoviesViewController.swift */; };
+		254759561E4D074C00A992AA /* MovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254759551E4D074C00A992AA /* MovieModel.swift */; };
 		256836A31E4B16A700B40120 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 256836A21E4B16A700B40120 /* Main.storyboard */; };
 		25FCA1121E441FDA009DA259 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCA1111E441FDA009DA259 /* MoviesViewController.swift */; };
 		25FCA1141E44219F009DA259 /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCA1131E44219F009DA259 /* MovieCollectionViewCell.swift */; };
@@ -52,6 +53,7 @@
 		250C3D521E4416660058C440 /* FlicksCollectionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlicksCollectionUITests.swift; sourceTree = "<group>"; };
 		250C3D541E4416660058C440 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		252F626D1E4BBC81000D818E /* TopMoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopMoviesViewController.swift; sourceTree = "<group>"; };
+		254759551E4D074C00A992AA /* MovieModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieModel.swift; sourceTree = "<group>"; };
 		256836A21E4B16A700B40120 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		25FCA1111E441FDA009DA259 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		25FCA1131E44219F009DA259 /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				25FCA1191E442474009DA259 /* HelperFunctions.swift */,
 				250C3D391E4416660058C440 /* Assets.xcassets */,
 				250C3D3E1E4416660058C440 /* Info.plist */,
+				254759551E4D074C00A992AA /* MovieModel.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				254759561E4D074C00A992AA /* MovieModel.swift in Sources */,
 				25FCA1141E44219F009DA259 /* MovieCollectionViewCell.swift in Sources */,
 				25FFB4421E4AA19600BB7F91 /* MovieDetailViewController.swift in Sources */,
 				25FCA11A1E442474009DA259 /* HelperFunctions.swift in Sources */,
@@ -530,6 +534,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2BE34FBCC072302071282C86 /* Pods-FlicksCollection.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = G2REBFM4P3;
 				INFOPLIST_FILE = FlicksCollection/Info.plist;
@@ -545,6 +550,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 352693D7893AF12AD5B8537E /* Pods-FlicksCollection.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = G2REBFM4P3;
 				INFOPLIST_FILE = FlicksCollection/Info.plist;

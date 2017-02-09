@@ -14,12 +14,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>DropDownMenuKit.xcscheme</key>
+		<key>Pods-FlicksCollection.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-FlicksCollection.xcscheme</key>
+		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,7 +27,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1069D7F5B10A0F3D4DE25F0ECEF32FC6</key>
+		<key>2A01A2B6C8DCE9C0CAECC43178F894A6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -37,7 +37,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C3B0D4ADAAB95D2754E11D3C6B547D09</key>
+		<key>C1437B3E9B803D622747327976EDB7EB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
