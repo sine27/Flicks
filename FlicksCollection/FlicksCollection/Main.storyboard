@@ -29,7 +29,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lVt-QA-Pb2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1979" y="-215"/>
+            <point key="canvasLocation" x="-1578" y="123"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Lhw-Tc-QeF">
@@ -89,16 +89,16 @@
                                 </connections>
                             </scrollView>
                             <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nUX-Tl-bsc">
-                                <rect key="frame" x="3.5" y="247" width="368" height="302"/>
+                                <rect key="frame" x="4" y="248" width="368" height="301"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lz5-2X-Fw6">
-                                        <rect key="frame" x="0.0" y="10" width="368" height="282"/>
+                                        <rect key="frame" x="0.0" y="10" width="368" height="281"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UR7-ns-cRx">
                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="117.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="jzm-q1-M3C">
-                                                        <rect key="frame" x="10" y="0.5" width="348" height="117.5"/>
+                                                        <rect key="frame" x="10" y="0.0" width="348" height="117.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIR-5L-DMs">
                                                                 <rect key="frame" x="0.0" y="0.0" width="348" height="27"/>
@@ -200,12 +200,12 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BvG-if-nWn">
-                                <rect key="frame" x="167" y="227" width="40" height="20"/>
+                                <rect key="frame" x="167" y="228" width="40" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="I8D-Ah-23y"/>
                                 </constraints>
                                 <color key="tintColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" backgroundImage="downButton"/>
+                                <state key="normal" backgroundImage="upButton"/>
                                 <connections>
                                     <action selector="upButtonTapped:" destination="Lx7-0c-H0k" eventType="touchUpInside" id="Qta-6X-MnG"/>
                                 </connections>
@@ -240,7 +240,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FRH-J1-9oT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1621.5999999999999" y="98.50074962518741"/>
+            <point key="canvasLocation" x="1807" y="123"/>
         </scene>
         <!--Movies View Controller-->
         <scene sceneID="QI2-ye-cVV">
@@ -311,18 +311,6 @@
                                     <outlet property="delegate" destination="eXD-rP-bjD" id="8Vx-Ai-Dck"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="luW-Iw-Wbm">
-                                <rect key="frame" x="157" y="272" width="60" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="1eY-eJ-7ty"/>
-                                    <constraint firstAttribute="height" constant="60" id="g3Z-AJ-wca"/>
-                                </constraints>
-                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" backgroundImage="refreshButtonImg"/>
-                                <connections>
-                                    <action selector="refreshWhenErrorOccur:" destination="eXD-rP-bjD" eventType="touchUpInside" id="CUs-8L-m0x"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jxf-3s-Jq9">
                                 <rect key="frame" x="4" y="0.0" width="115.5" height="115.5"/>
                                 <subviews>
@@ -342,20 +330,20 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bbL-3G-zKf">
                                         <rect key="frame" x="19" y="11" width="77" height="99"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eJh-Qu-gNC">
-                                                <rect key="frame" x="0.0" y="0.0" width="77" height="33"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <state key="normal" title="Date"/>
-                                                <connections>
-                                                    <action selector="recentTapped:" destination="eXD-rP-bjD" eventType="touchUpInside" id="m7E-Ae-nxQ"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTr-Bx-91s">
-                                                <rect key="frame" x="0.0" y="33" width="77" height="33"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="77" height="33"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal" title="Popularity"/>
                                                 <connections>
                                                     <action selector="popularTapped:" destination="eXD-rP-bjD" eventType="touchUpInside" id="hxi-qQ-EEb"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eJh-Qu-gNC">
+                                                <rect key="frame" x="0.0" y="33" width="77" height="33"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <state key="normal" title="Date"/>
+                                                <connections>
+                                                    <action selector="recentTapped:" destination="eXD-rP-bjD" eventType="touchUpInside" id="m7E-Ae-nxQ"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jL1-Ux-gga">
@@ -396,7 +384,6 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <color key="tintColor" red="0.88844384519999997" green="0.88844384519999997" blue="0.88844384519999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="luW-Iw-Wbm" firstAttribute="centerY" secondItem="1em-cV-TKN" secondAttribute="centerY" id="9Ae-C0-Sbz"/>
                             <constraint firstItem="bg6-71-KeZ" firstAttribute="top" secondItem="UJS-I5-qLS" secondAttribute="bottom" id="Haf-DB-gRZ"/>
                             <constraint firstItem="UJS-I5-qLS" firstAttribute="top" secondItem="mic-G4-Ltb" secondAttribute="bottom" id="ITu-HZ-vI6"/>
                             <constraint firstItem="Jxf-3s-Jq9" firstAttribute="leading" secondItem="1em-cV-TKN" secondAttribute="leadingMargin" constant="-12" id="U8l-eT-XxN"/>
@@ -405,7 +392,6 @@
                             <constraint firstItem="mic-G4-Ltb" firstAttribute="width" secondItem="1em-cV-TKN" secondAttribute="width" id="bM6-vR-EQc"/>
                             <constraint firstItem="UJS-I5-qLS" firstAttribute="width" secondItem="1em-cV-TKN" secondAttribute="width" id="cgg-hS-M1O"/>
                             <constraint firstItem="Jxf-3s-Jq9" firstAttribute="top" secondItem="G2v-yL-uqs" secondAttribute="bottom" id="jBp-pb-etd"/>
-                            <constraint firstItem="luW-Iw-Wbm" firstAttribute="centerX" secondItem="1em-cV-TKN" secondAttribute="centerX" id="ntY-vh-u4y"/>
                             <constraint firstItem="UJS-I5-qLS" firstAttribute="centerX" secondItem="1em-cV-TKN" secondAttribute="centerX" id="sxc-02-g5P"/>
                         </constraints>
                     </view>
@@ -417,10 +403,10 @@
                             </connections>
                         </barButtonItem>
                         <button key="titleView" opaque="NO" userInteractionEnabled="NO" contentMode="top" semanticContentAttribute="forceRightToLeft" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hEz-Oh-TWL">
-                            <rect key="frame" x="119" y="12" width="137" height="21"/>
+                            <rect key="frame" x="119" y="6" width="137" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <state key="normal" title="Filter "/>
+                            <state key="normal" title="Now Playing"/>
                         </button>
                         <barButtonItem key="rightBarButtonItem" image="searchButtonImg" width="10" id="LbA-IK-8pd">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -440,7 +426,6 @@
                         <outlet property="popularityButton" destination="PTr-Bx-91s" id="NYa-9C-HIQ"/>
                         <outlet property="rateButton" destination="jL1-Ux-gga" id="SIJ-Hi-dcT"/>
                         <outlet property="recentButton" destination="eJh-Qu-gNC" id="mBQ-Ah-Fpa"/>
-                        <outlet property="refreshButton" destination="luW-Iw-Wbm" id="9qD-JS-SOa"/>
                         <outlet property="searchBar" destination="mic-G4-Ltb" id="nzE-vF-ZLU"/>
                         <outlet property="searchBarButton" destination="LbA-IK-8pd" id="tKw-Lx-onK"/>
                     </connections>
@@ -520,18 +505,6 @@
                                     <outlet property="delegate" destination="C0u-Q3-0hR" id="2ki-mr-VG8"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VLG-CI-xxU">
-                                <rect key="frame" x="157" y="272" width="60" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="nFy-vz-1yz"/>
-                                    <constraint firstAttribute="height" constant="60" id="ogy-Kg-mHs"/>
-                                </constraints>
-                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" backgroundImage="refreshButtonImg"/>
-                                <connections>
-                                    <action selector="refreshWhenErrorOccur:" destination="C0u-Q3-0hR" eventType="touchUpInside" id="PId-kA-qUv"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <color key="tintColor" red="0.88844384519999997" green="0.88844384519999997" blue="0.88844384519999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -542,8 +515,6 @@
                             <constraint firstItem="5VJ-SE-wq0" firstAttribute="width" secondItem="phI-5L-cts" secondAttribute="width" id="QUk-El-eJ4"/>
                             <constraint firstItem="bQ6-iw-A06" firstAttribute="top" secondItem="4oQ-zr-eNh" secondAttribute="bottom" id="UsJ-Bx-rH5"/>
                             <constraint firstItem="XFx-Ct-JUQ" firstAttribute="top" secondItem="5VJ-SE-wq0" secondAttribute="bottom" id="Wlw-oV-gLp"/>
-                            <constraint firstItem="VLG-CI-xxU" firstAttribute="centerY" secondItem="phI-5L-cts" secondAttribute="centerY" id="uNe-v5-eYR"/>
-                            <constraint firstItem="VLG-CI-xxU" firstAttribute="centerX" secondItem="phI-5L-cts" secondAttribute="centerX" id="w3K-gs-tgO"/>
                             <constraint firstItem="bQ6-iw-A06" firstAttribute="width" secondItem="phI-5L-cts" secondAttribute="width" id="z8S-tC-Os2"/>
                         </constraints>
                     </view>
@@ -569,7 +540,6 @@
                     <connections>
                         <outlet property="collectionToSearch" destination="2eN-Qn-Xfu" id="MRr-n8-vYQ"/>
                         <outlet property="moviesCollectionView" destination="5VJ-SE-wq0" id="dYW-S1-edS"/>
-                        <outlet property="refreshButton" destination="VLG-CI-xxU" id="xbN-KR-Qii"/>
                         <outlet property="searchBar" destination="bQ6-iw-A06" id="Pvr-dJ-Jue"/>
                     </connections>
                 </viewController>
@@ -613,11 +583,10 @@
     </scenes>
     <resources>
         <image name="backBoutton" width="14" height="21"/>
-        <image name="downButton" width="30" height="20"/>
         <image name="menuButtonImg" width="20" height="30"/>
-        <image name="refreshButtonImg" width="16" height="16"/>
         <image name="searchButtonImg" width="20" height="30"/>
         <image name="triangle" width="10" height="5"/>
+        <image name="upButton" width="30" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bJm-od-Cxj"/>

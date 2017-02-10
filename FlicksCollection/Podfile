@@ -6,4 +6,5 @@ target 'FlicksCollection' do
 pod 'AFNetworking', '~> 3.0'
 pod 'Cosmos', '~> 8.0'
 pod 'SwiftyJSON'
+pod "ESPullToRefresh"
 end

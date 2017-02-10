@@ -8,300 +8,335 @@
 
 import UIKit
 import AFNetworking
+import ESPullToRefresh
 
 class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource,  UICollectionViewDelegateFlowLayout {
-  
-  let helper = HelperFunctions()
-  
-  // MARK : variables >>>>>
-  @IBOutlet weak var moviesCollectionView: UICollectionView!
-  
-  @IBOutlet weak var searchBar: UISearchBar!
-  
-  @IBOutlet weak var refreshButton: UIButton!
-  
-  @IBOutlet weak var collectionToSearch: NSLayoutConstraint!
-  
-  // All movies info from database
-  var movies: [NSDictionary] = []
-  
-  // filtered movies info after seach bar activated
-  var searchResults : [NSDictionary] = []
-  
-  // pull to refresh
-  let refreshControl = UIRefreshControl()
-  
-  // tap gesture
-  var tapGesture = UITapGestureRecognizer()
-  
-  // if seach bar is activated
-  var searchActive = false
-  // <<<<< variables
-  
-  
-  // hide navigationBar when searching
-  override func viewWillAppear(_ animated: Bool) {
-    if searchBar.isHidden == false {
-      self.navigationController?.isNavigationBarHidden = true
-    } else {
-      self.navigationController?.isNavigationBarHidden = false
-    }
-  }
-  
-  // view setup
-  override func viewDidLoad() {
-    super.viewDidLoad()
     
-    // setup collection view
-    moviesCollectionView.delegate = self
-    moviesCollectionView.dataSource = self
+    let helper = HelperFunctions()
     
-    // All subviews : labels and spinner
-    helper.subviewSetup(sender: self)
+    // MARK : variables >>>>>
+    @IBOutlet weak var moviesCollectionView: UICollectionView!
     
-    // cunstom navigation bar
-    helper.navigationBarSetup(sender : self)
+    @IBOutlet weak var searchBar: UISearchBar!
     
-    // display activity indicator
-    helper.activityIndicator(sender: self)
+    @IBOutlet weak var collectionToSearch: NSLayoutConstraint!
     
-    // setup pull to refresh activity indicator
-    refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh", attributes: [NSForegroundColorAttributeName: UIColor.init(white: 1, alpha: 1)])
-    refreshControl.addTarget(self, action: #selector(MoviesViewController.refresh(sender: )), for: UIControlEvents.valueChanged)
-    moviesCollectionView.addSubview(refreshControl)
+    // All movies info from database
+    var movies: [NSDictionary] = []
     
-    // setup collection view layout
-    helper.collectionViewLayoutSetup(collectionView: self.moviesCollectionView, view : self)
+    // filtered movies info after seach bar activated
+    var searchResults : [NSDictionary] = []
+
+    // tap gesture
+    var tapGesture = UITapGestureRecognizer()
     
-    // setup refresh button
-    refreshButton.alpha = 0
-    self.refreshButton.isUserInteractionEnabled = false
+    var headerAnimator = HeaderAnimator()
     
-    searchBar.isHidden = true
+    var footerAnimator = FooterAnimator()
     
-    // hide searchBar when search button not clicked
-    collectionToSearch.constant = -44
+    // if seach bar is activated
+    var searchActive = false
     
-    // requst for data
-    request()
-  }
-  
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    // loading page > 1
+    var isMoreDataLoading = false
     
-    if(searchActive) {
-      if searchResults.count == 0 && searchBar.text != "" {
-        let notifyText = "Not Found"
-        helper.showNotifyLabelCenter(sender: self, notificationLabel: notifyText, notifyType: 0)
-      } else {
-        helper.removeNotifyLabelCenter()
-      }
-      return searchResults.count
-    }
-    return movies.count
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    // Access
-    let cell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as! MovieCollectionViewCell
+    // page number for request +1 when request data successfully
+    var page = 1
+    // <<<<< variables
     
-    cell.layer.borderWidth = 0
     
-    if refreshControl.isRefreshing {
-      cell.imgIsLoading = true
+    // hide navigationBar when searching
+    override func viewWillAppear(_ animated: Bool) {
+        if searchBar.isHidden == false {
+            self.navigationController?.isNavigationBarHidden = true
+        } else {
+            self.navigationController?.isNavigationBarHidden = false
+        }
     }
     
-    var movie : NSDictionary
-    
-    // check if searching
-    if(searchActive){
-      movie = searchResults[indexPath.row]
-    } else {
-      movie = movies[indexPath.row]
+    // view setup
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // setup collection view
+        moviesCollectionView.delegate = self
+        moviesCollectionView.dataSource = self
+        
+        // All subviews : labels and spinner
+        helper.subviewSetup(sender: self)
+        
+        // cunstom navigation bar
+        helper.navigationBarSetup(sender : self)
+        
+        // display activity indicator
+        helper.activityIndicator(sender: self)
+        
+        // setup collection view layout
+        helper.collectionViewLayoutSetup(collectionView: self.moviesCollectionView, view : self)
+
+        searchBar.isHidden = true
+        
+        // hide searchBar when search button not clicked
+        collectionToSearch.constant = -44
+        
+        /// Custom refreshController
+        self.moviesCollectionView.es_addPullToRefresh(animator: headerAnimator) {
+            
+            self.page = 1
+            self.request()
+        }
+        
+        self.moviesCollectionView.es_addInfiniteScrolling(animator: footerAnimator) {
+            
+            self.isMoreDataLoading = true
+            self.request()
+        }
+        
+        moviesCollectionView.expriedTimeInterval = 10.0
+        moviesCollectionView.es_autoPullToRefresh()
+        
+        // requst for data
+        request()
     }
     
-    // assign data
-    if let imageUrlString = movie.value(forKeyPath: "poster_path") as? String {
-      let newImageUrlString = "https://image.tmdb.org/t/p/w342\(imageUrlString)"
-      let imageUrl = URL(string: newImageUrlString)!
-      cell.movieImage.setImageWith(imageUrl)
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
-    cell.fadeInImg()
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if(searchActive) {
+            if searchResults.count == 0 && searchBar.text != "" {
+                let notifyText = "Not Found"
+                helper.showNotifyLabelCenter(sender: self, notificationLabel: notifyText, notifyType: 0)
+            } else {
+                helper.removeNotifyLabelCenter()
+            }
+            return searchResults.count
+        }
+        return movies.count
+    }
     
-    return cell
-  }
-  
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    
-    if (segue.identifier == "showTopMovieDetail") {
-      let vc = segue.destination as! MovieDetailViewController
-      
-      if let cell = sender as? UICollectionViewCell {
-        if let indexPath = moviesCollectionView.indexPath(for: cell) {
-          var movie : NSDictionary!
-          if (searchActive) {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // Access
+        let cell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as! MovieCollectionViewCell
+        
+        cell.layer.borderWidth = 0
+
+        var movie : NSDictionary
+        
+        // check if searching
+        if(searchActive){
             movie = searchResults[indexPath.row]
-          } else {
+        } else {
             movie = movies[indexPath.row]
-          }
-          vc.movie = movie
         }
-      }
-    }
-  }
-  
-  // show footer if needed
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    helper.footerSetup(scrollView: scrollView, collectionView: moviesCollectionView, view: self, label: "No More Results", searchActive: searchActive)
-  }
-  
-  // MARK : search bar controller >>>>>
-  
-  @IBAction func searchActivated(_ sender: Any) {
-    
-    UIView.animate(withDuration: 0.6) {
-      self.loadViewIfNeeded()
-      self.collectionToSearch.constant = 0
-      self.searchBar.isHidden = false
-      self.navigationController?.isNavigationBarHidden = true
-      self.searchBar.becomeFirstResponder()
-    }
-  }
-  
-  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-    searchActive = true;
-    self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
-    
-    tapGesture = UITapGestureRecognizer(target: self, action: #selector(MoviesViewController.autoHideKeyboardWhenTapOutside(sender: )))
-    moviesCollectionView.addGestureRecognizer(tapGesture)
-  }
-  
-  func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-    moviesCollectionView.removeGestureRecognizer(tapGesture)
-    
-    if searchBar.text == "" {
-      searchActive = false
-      helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
-    }
-  }
-  
-  func autoHideKeyboardWhenTapOutside(sender: UITapGestureRecognizer) {
-    moviesCollectionView.removeGestureRecognizer(tapGesture)
-    view.endEditing(true)
-  }
-  
-  
-  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    
-    UIView.animate(withDuration: 0.6) {
-      self.loadViewIfNeeded()
-      self.collectionToSearch.constant = -44
-      self.searchBar.isHidden = true
-      self.navigationController?.isNavigationBarHidden = false
+        
+        cell.movie = movie
+        
+        cell.loadImage()
+        
+        return cell
     }
     
-    searchActive = false;
-    searchResults = []
-    searchBar.text = ""
-    
-    searchBar.resignFirstResponder()
-    
-    helper.removeNotifyLabelCenter()
-    
-    self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
-  }
-  
-  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    searchBar.resignFirstResponder()
-  }
-  
-  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    
-    // reset search result
-    searchResults = []
-    
-    // search filter
-    for movie in movies {
-      let title: String = movie.value(forKey: "title") as! String
-      let overview: String = movie.value(forKey: "overview") as! String
-      if title.range(of: searchText, options: NSString.CompareOptions.caseInsensitive) != nil {
-        searchResults.append(movie)
-      } else if overview.range(of: searchText, options: NSString.CompareOptions.caseInsensitive) != nil {
-        searchResults.append(movie)
-      }
-    }
-    
-    // reload data for search
-    searchActive = true;
-    self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
-  }
-  // <<<<< search bar controller
-  
-  @IBAction func refreshWhenErrorOccur(_ sender: Any) {
-    
-    self.refreshButton.alpha = 0
-    self.refreshButton.isUserInteractionEnabled = true
-    helper.subviewSetup(sender: self)
-    helper.activityIndicator(sender: self)
-    refresh(sender: self)
-  }
-  
-  // MARK : helper functions >>>>>
-  // re-send the request
-  func refresh(sender:AnyObject) {
-    request()
-  }
-  
-  // MARK : JSON request >>>
-  func request () {
-    
-    helper.removeNotifyLabelCenter()
-    
-    let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-    let url = URL(string: "https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)")!
-    let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
-    let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
-    let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
-      
-      self.helper.stopActivityIndicator()
-      
-      if let error = error {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        self.searchBar.isUserInteractionEnabled = false
-        
-        let notifyText = "\(error.localizedDescription)"
-        self.helper.showNotifyLabelCenter(sender: self, notificationLabel: notifyText, notifyType: 1)
-        
-        UIView.animate(withDuration: 0.5, animations: {
-          self.refreshButton.alpha = 1
-        })
-        self.refreshButton.isUserInteractionEnabled = true
-      }
-        
-      else if let data = data {
-        
-        self.searchBar.isUserInteractionEnabled = true
-        
-        if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-          
-          self.movies = dataDictionary["results"] as! [NSDictionary]
-          
-          self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
-          
-          if self.refreshControl.isRefreshing {
-            self.refreshControl.endRefreshing()
-          }
+        if (segue.identifier == "showTopMovieDetail") {
+            let vc = segue.destination as! MovieDetailViewController
+            
+            if let cell = sender as? UICollectionViewCell {
+                if let indexPath = moviesCollectionView.indexPath(for: cell) {
+                    var movie : NSDictionary!
+                    if (searchActive) {
+                        movie = searchResults[indexPath.row]
+                    } else {
+                        movie = movies[indexPath.row]
+                    }
+                    
+                    let original_title = movie.value(forKey: "original_title") as? String
+                    let overview = movie.value(forKey: "overview") as? String
+                    let backdrop_path = movie.value(forKey: "backdrop_path") as? String
+                    let poster_path = movie.value(forKey: "poster_path") as? String
+                    let release_date = movie.value(forKey: "release_date") as? String
+                    let original_language = movie.value(forKey: "original_language") as? String
+                    
+                    let id = movie.value(forKey: "id") as? Int
+                    let popularity = movie.value(forKey: "popularity") as? Double
+                    let vote_average = movie.value(forKey: "vote_average") as? Double
+                    let vote_count = movie.value(forKey: "vote_count") as? Int
+                    let runtime = movie.value(forKey: "runtime") as? Int
+                    
+                    let adult = movie.value(forKey: "adult") as? Bool
+                    
+                    vc.movie = MovieModel(original_title:( original_title ?? ""), overview: (overview ?? ""), backdrop_path: (backdrop_path ?? ""), poster_path: (poster_path ?? ""), release_date: (release_date ?? ""), original_language: (original_language ?? ""), id: (id ?? 0), popularity: (popularity ?? 0.0), vote_average: (vote_average ?? 0.0), vote_count: (vote_count ?? 0), runtime: (runtime ?? 0), adult: (adult ?? false))
+                }
+            }
         }
-      }
     }
-    task.resume()
-  }
-  // <<< JSON request
-  
-  // <<<<< helper functions
+    
+    // MARK : search bar controller >>>>>
+    
+    @IBAction func searchActivated(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.6) {
+            self.loadViewIfNeeded()
+            self.collectionToSearch.constant = 0
+            self.searchBar.isHidden = false
+            self.navigationController?.isNavigationBarHidden = true
+            self.searchBar.becomeFirstResponder()
+        }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchActive = true
+        self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
+        
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(MoviesViewController.autoHideKeyboardWhenTapOutside(sender: )))
+        moviesCollectionView.addGestureRecognizer(tapGesture)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        moviesCollectionView.removeGestureRecognizer(tapGesture)
+        
+        if searchBar.text == "" {
+            searchActive = false
+            helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
+            
+            // show navigationBar and hide searchBar
+            UIView.animate(withDuration: 0.6) {
+                self.loadViewIfNeeded()
+                self.collectionToSearch.constant = -44
+                self.searchBar.isHidden = true
+                self.navigationController?.isNavigationBarHidden = false
+            }
+        }
+    }
+    
+    func autoHideKeyboardWhenTapOutside(sender: UITapGestureRecognizer) {
+        moviesCollectionView.removeGestureRecognizer(tapGesture)
+        view.endEditing(true)
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        UIView.animate(withDuration: 0.6) {
+            self.loadViewIfNeeded()
+            self.collectionToSearch.constant = -44
+            self.searchBar.isHidden = true
+            self.navigationController?.isNavigationBarHidden = false
+        }
+        
+        searchActive = false;
+        searchResults = []
+        searchBar.text = ""
+        
+        searchBar.resignFirstResponder()
+        
+        helper.removeNotifyLabelCenter()
+        
+        self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        // reset search result
+        searchResults = []
+        
+        // search filter
+        for movie in movies {
+            let title: String = movie.value(forKey: "title") as! String
+            let overview: String = movie.value(forKey: "overview") as! String
+            if title.range(of: searchText, options: NSString.CompareOptions.caseInsensitive) != nil {
+                searchResults.append(movie)
+            } else if overview.range(of: searchText, options: NSString.CompareOptions.caseInsensitive) != nil {
+                searchResults.append(movie)
+            }
+        }
+        
+        // reload data for search
+        searchActive = true;
+        self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
+    }
+    // <<<<< search bar controller
+    
+    // MARK : helper functions >>>>>
+    
+    // MARK : JSON request >>>
+    func request () {
+        
+        print("Top Data Loading...")
+        
+        helper.removeNotifyLabelCenter()
+        
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let url = URL(string: "https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)&page=\(page)")!
+        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            
+            self.helper.stopActivityIndicator()
+            
+            if let error = error {
+                
+                NSLog("Top Data Loading [Fail] \(error.localizedDescription)")
+                
+                self.searchBar.isUserInteractionEnabled = false
+                
+                /// stop loading more data
+                if self.isMoreDataLoading {
+                    
+                }
+            }
+                
+            else if let data = data {
+                
+                self.searchBar.isUserInteractionEnabled = true
+                
+                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                    
+                    if self.isMoreDataLoading {
+                        
+                        NSLog("Top Data Loading [Success] page\(self.page)")
+                        
+                        if ( dataDictionary["results"] as! [NSDictionary] ) == [] {
+                            // If no more data
+                            self.moviesCollectionView.es_noticeNoMoreData()
+                            
+                        } else {
+                            self.movies += dataDictionary["results"] as! [NSDictionary]
+                            
+                            // If common end
+                            self.moviesCollectionView.es_stopLoadingMore()
+                        }
+                    }
+                        
+                    else {
+                        
+                        NSLog("Top Data Loading [Success] refresh : page\(self.page)")
+                        
+                        self.movies = dataDictionary["results"] as! [NSDictionary]
+                        
+                        // Set ignore footer or not
+                        self.moviesCollectionView.es_stopPullToRefresh(ignoreDate: true, ignoreFooter: false)
+                    }
+                    
+                    self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
+                    
+                    self.tabBarController?.tabBar.items?[0].badgeValue = "\(self.movies.count)"
+                }
+                self.page += 1
+            }
+            self.isMoreDataLoading = false
+        }
+        task.resume()
+    }
+    // <<< JSON request
+    
+    // <<<<< helper functions
 }

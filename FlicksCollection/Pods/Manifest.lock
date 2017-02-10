@@ -15,18 +15,21 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Cosmos (8.0.2)
+  - ESPullToRefresh (2.6)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - Cosmos (~> 8.0)
+  - ESPullToRefresh
   - SwiftyJSON
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Cosmos: 007c0b8e33a85e5363911bdd933571bbe221f7ef
+  ESPullToRefresh: 85f4990acf87f78c6a1466bbbee7a75d7de24db9
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 01ce1f5e1f2781417db67255dcc05ac298ad0237
+PODFILE CHECKSUM: df697f3a1ff31ec7194c7531795bfc8b50707a1c
 
 COCOAPODS: 1.1.1

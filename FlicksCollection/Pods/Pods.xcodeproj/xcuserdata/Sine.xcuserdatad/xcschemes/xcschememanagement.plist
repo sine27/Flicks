@@ -14,6 +14,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ESPullToRefresh-ESPullToRefresh.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ESPullToRefresh.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-FlicksCollection.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,7 +37,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>2A01A2B6C8DCE9C0CAECC43178F894A6</key>
+		<key>00A62A1DBAC2A142A4ADCF9AFD6C6290</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>10F0C3C80828CC88CE8154B17E6E0B8F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -37,7 +52,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C1437B3E9B803D622747327976EDB7EB</key>
+		<key>83D04EDAE5838FE3657C87DD12181688</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B9C3F6E738CA4F3D2A4887F03C4226E3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
