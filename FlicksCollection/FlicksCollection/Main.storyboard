@@ -8,7 +8,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -423,17 +422,12 @@
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <state key="normal" title="Filter "/>
                         </button>
-                        <rightBarButtonItems>
-                            <barButtonItem image="searchButtonImg" width="10" id="LbA-IK-8pd">
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <action selector="searchButtonTapped:" destination="eXD-rP-bjD" id="VU1-U5-V1H"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="collectionButtonImg" id="9qY-LZ-pGn">
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" image="searchButtonImg" width="10" id="LbA-IK-8pd">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="searchButtonTapped:" destination="eXD-rP-bjD" id="VU1-U5-V1H"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
@@ -619,7 +613,6 @@
     </scenes>
     <resources>
         <image name="backBoutton" width="14" height="21"/>
-        <image name="collectionButtonImg" width="20" height="30"/>
         <image name="downButton" width="30" height="20"/>
         <image name="menuButtonImg" width="20" height="30"/>
         <image name="refreshButtonImg" width="16" height="16"/>
