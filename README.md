@@ -7,6 +7,7 @@ Time spent:
 - **7** hours spent in Version 2.1
 - **3** hours spent in Version 2.2
 - **2** hour spent in version 2.3 (Gesture enabled & code organized)
+- **10** hour spent in version 2.4 (Review Table & Gesture & Animation & infinite scroll & movie Model)
 
 **12** hours spent in total
 
@@ -25,14 +26,15 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- ☑️ Animation : enabled hide and show the detail with animation
-- ☑️ scrollView : on detail view
-- ☑️ DropDown Menu : sort the movies by swiching filter keys
-- ☑️ scrollView : zooming image(large) enabled
-- ☑️ TapGesture 
-  - Tap outside to hide keyboard while searching
-  - Tap outside to hide dropdown menu
-
+- ☑️ User can show the content view by tapping the button and hide it by tapping outside or tapping the button.
+- ☑️ User can scroll the content view.
+- ☑️ User can sort the movies by swiching filter keys in the dropdown menu.
+- ☑️ User can zoom the original poster in the detail view.
+- ☑️ User can hide keyboard by tapping outside.
+- ☑️ User can hide the dropdown menu by tapping outside.
+- ☑️ User can pull to load more data.
+- ☑️ User can view the review table by clicking the right navigation bar item.
+- ☑️ User can view the full content of a review by tapping the cell.
 
 ## Video Walkthrough 
 
@@ -45,6 +47,10 @@ version 2.1 detail view enabled with animation and custom navigation bar & filte
 version 2.2 tab view & zoom image
 
 <img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-2tabView.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
+
+version 2.4 review table
+
+<img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-4review.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
 
 ## Notes
 

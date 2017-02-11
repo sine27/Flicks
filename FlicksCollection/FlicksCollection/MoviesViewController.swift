@@ -89,6 +89,9 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     var sortRequest = ""
     
     // <<<<< variables
+    @IBAction func errorButtonTapped(_ sender: Any) {
+        moviesCollectionView.es_startPullToRefresh()
+    }
     
     // MARK : Dropdown Menu For Sorting
     
@@ -225,8 +228,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         /// Custom refreshController
         self.moviesCollectionView.es_addPullToRefresh(animator: headerAnimator) {
             
-            self.helper.scrollToTop(collectionView : self.moviesCollectionView)
-            
             if self.searchActive && self.searchRequest != "" {
                 self.searchPage = 1
                 self.request(identity: 0, urlString: self.searchRequest)
@@ -331,7 +332,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                     
                     let adult = movie.value(forKey: "adult") as? Bool
 
-                    vc.movie = MovieModel(original_title:( original_title ?? ""), overview: (overview ?? ""), backdrop_path: (backdrop_path ?? ""), poster_path: (poster_path ?? ""), release_date: (release_date ?? ""), original_language: (original_language ?? ""), id: (id ?? 0), popularity: (popularity ?? 0.0), vote_average: (vote_average ?? 0.0), vote_count: (vote_count ?? 0), runtime: (runtime ?? 0), adult: (adult ?? false))
+                    vc.movie = MovieModel(original_title: original_title, overview: overview, backdrop_path: backdrop_path, poster_path: poster_path, release_date: release_date, original_language: original_language, id: id!, popularity: popularity, vote_average: vote_average, vote_count: vote_count, runtime: runtime, adult: adult)
                 }
             }
         }
@@ -497,6 +498,12 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                         self.errorButton.isHidden = false
                     })
                     self.moviesCollectionView.es_stopPullToRefresh()
+                }
+                
+                if self.movies.count != 0 {
+                    self.errorButton.isUserInteractionEnabled = false
+                } else {
+                    self.errorButton.setTitle("Network Error! Tap to Refresh", for: .normal)
                 }
             }
                 

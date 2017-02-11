@@ -65,14 +65,14 @@
                         <viewControllerLayoutGuide type="bottom" id="3s5-dE-sRn"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Xt7-tr-hpY">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w8W-TO-YhU">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xdt-Sy-Zah">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                     </imageView>
                                 </subviews>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -89,10 +89,10 @@
                                 </connections>
                             </scrollView>
                             <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nUX-Tl-bsc">
-                                <rect key="frame" x="3" y="230" width="314" height="284"/>
+                                <rect key="frame" x="3" y="247" width="314" height="252"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lz5-2X-Fw6">
-                                        <rect key="frame" x="0.0" y="10" width="314" height="264"/>
+                                        <rect key="frame" x="0.0" y="10" width="314" height="232"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UR7-ns-cRx">
                                                 <rect key="frame" x="0.0" y="0.0" width="314" height="117.5"/>
@@ -200,7 +200,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BvG-if-nWn">
-                                <rect key="frame" x="140" y="210" width="40" height="20"/>
+                                <rect key="frame" x="140" y="227" width="40" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="I8D-Ah-23y"/>
                                 </constraints>
@@ -233,6 +233,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="contentView" destination="nUX-Tl-bsc" id="0JH-PM-Qeo"/>
                         <outlet property="dateLabel" destination="dRa-6a-Cq9" id="cYN-tq-HEc"/>
@@ -259,14 +260,14 @@
                         <viewControllerLayoutGuide type="bottom" id="ISy-oX-hXw"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Hwp-rd-rtU">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nv6-Nc-sXT">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cu2-QB-K4p">
-                                <rect key="frame" x="4" y="64" width="310" height="504"/>
+                                <rect key="frame" x="4" y="64" width="310" height="440"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -322,14 +323,17 @@
                                     <outlet property="delegate" destination="s5L-s1-sLq" id="opQ-5z-akC"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" userInteractionEnabled="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="SYz-mx-l8V">
-                                <rect key="frame" x="0.0" y="64" width="320" height="45"/>
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="SYz-mx-l8V">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                 <color key="backgroundColor" red="0.88626269040000005" green="0.63642339910000001" blue="0.23511367590000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="8Va-u7-9H4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Network Error! Pull to Refresh"/>
+                                <state key="normal" title="Network Error! Tap to Refresh"/>
+                                <connections>
+                                    <action selector="errorButtonTapped:" destination="s5L-s1-sLq" eventType="touchUpInside" id="GLi-3Q-UqN"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -348,6 +352,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Reviews" id="trs-gf-gxg"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="backgroundImage" destination="nv6-Nc-sXT" id="v9T-20-rmO"/>
                         <outlet property="errorButton" destination="SYz-mx-l8V" id="Bh8-7u-J6a"/>
@@ -502,14 +507,17 @@
                                     <constraint firstItem="bbL-3G-zKf" firstAttribute="centerX" secondItem="Jxf-3s-Jq9" secondAttribute="centerX" id="oil-UE-AIS"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" userInteractionEnabled="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sce-E9-kLh">
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sce-E9-kLh">
                                 <rect key="frame" x="0.0" y="64" width="320" height="45"/>
                                 <color key="backgroundColor" red="0.8862626903553299" green="0.63642339906733825" blue="0.23511367588362631" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="lbd-Bh-8y8"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Network Error! Pull to Refresh"/>
+                                <state key="normal" title="Network Error! Tap to Refresh"/>
+                                <connections>
+                                    <action selector="errorButtonTapped:" destination="eXD-rP-bjD" eventType="touchUpInside" id="fKC-yw-es7"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
@@ -641,14 +649,17 @@
                                     <outlet property="delegate" destination="C0u-Q3-0hR" id="2ki-mr-VG8"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" userInteractionEnabled="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="WQj-NW-Y2Y">
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="WQj-NW-Y2Y">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                 <color key="backgroundColor" red="0.88626269040000005" green="0.63642339910000001" blue="0.23511367590000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="wIB-9Z-eOc"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Network Error! Pull to Refresh"/>
+                                <state key="normal" title="Network Error! Tap to Refresh"/>
+                                <connections>
+                                    <action selector="errorButtonTapped:" destination="C0u-Q3-0hR" eventType="touchUpInside" id="rvS-QL-RTw"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
@@ -741,6 +752,6 @@
         <image name="upButton" width="30" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bJm-od-Cxj"/>
+        <segue reference="QLp-JC-W4H"/>
     </inferredMetricsTieBreakers>
 </document>

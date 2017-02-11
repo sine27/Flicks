@@ -60,6 +60,10 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     var searchRequest = ""
     // <<<<< variables
     
+    @IBAction func errorButtonTapped(_ sender: Any) {
+        moviesCollectionView.es_startPullToRefresh()
+    }
+    
     // hide navigationBar when searching
     override func viewWillAppear(_ animated: Bool) {
         if searchBar.isHidden == false {
@@ -198,7 +202,7 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
                     
                     let adult = movie.value(forKey: "adult") as? Bool
                     
-                    vc.movie = MovieModel(original_title:( original_title ?? ""), overview: (overview ?? ""), backdrop_path: (backdrop_path ?? ""), poster_path: (poster_path ?? ""), release_date: (release_date ?? ""), original_language: (original_language ?? ""), id: (id ?? 0), popularity: (popularity ?? 0.0), vote_average: (vote_average ?? 0.0), vote_count: (vote_count ?? 0), runtime: (runtime ?? 0), adult: (adult ?? false))
+                    vc.movie = MovieModel(original_title: original_title, overview: overview, backdrop_path: backdrop_path, poster_path: poster_path, release_date: release_date, original_language: original_language, id: id!, popularity: popularity, vote_average: vote_average, vote_count: vote_count, runtime: runtime, adult: adult)
                 }
             }
         }
@@ -365,6 +369,12 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
                         self.errorButton.isHidden = false
                     })
                     self.moviesCollectionView.es_stopPullToRefresh()
+                }
+                
+                if self.movies.count != 0 {
+                    self.errorButton.isUserInteractionEnabled = false
+                } else {
+                    self.errorButton.setTitle("Network Error! Tap to Refresh", for: .normal)
                 }
             }
                 

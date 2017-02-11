@@ -43,7 +43,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
         // hide content view at first
-        viewToBottom.constant = 0 - self.contentView.frame.height + 15
+        viewToBottom.constant = 0 - self.contentView.frame.height + 5
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -137,7 +137,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurView = UIVisualEffectView(effect : blurEffect)
-        blurView.frame = moviePostImg.bounds
+        blurView.frame = self.view.bounds
         moviePostImg.addSubview(blurView)
         
         // assign data

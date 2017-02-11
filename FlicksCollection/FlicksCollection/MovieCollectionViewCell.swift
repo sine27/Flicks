@@ -26,6 +26,10 @@ class MovieCollectionViewCell: UICollectionViewCell {
             
             let defaultImage = UIImage(named: "noImg")
             
+            UIView.animate(withDuration: 0.5, animations: { () -> Void in
+                self.movieImage.image = defaultImage
+            })
+            
             UIView.animate(withDuration: 0.8, animations: {
                 self.movieImage.image = defaultImage
             })

@@ -45,6 +45,14 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var reviews : [NSDictionary] = []
 
+    @IBAction func errorButtonTapped(_ sender: Any) {
+        reviewsTableView.es_startPullToRefresh()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -66,13 +74,16 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurView = UIVisualEffectView(effect : blurEffect)
-        blurView.frame = backgroundImage.bounds
+        blurView.frame = self.view.bounds
         backgroundImage.addSubview(blurView)
         
         // All subviews : labels and spinner
         helper.subviewSetup(sender: self)
         
         helper.activityIndicator(sender: self)
+        
+        reviewsTableView.expriedTimeInterval = 10.0
+        reviewsTableView.es_autoPullToRefresh()
         
         /// Custom refreshController
         self.reviewsTableView.es_addPullToRefresh(animator: headerAnimator) {
@@ -88,9 +99,6 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.isMoreDataLoading = true
             self.request()
         }
-        
-        reviewsTableView.expriedTimeInterval = 10.0
-        reviewsTableView.es_autoPullToRefresh()
 
         request()
         
@@ -183,6 +191,12 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.errorButton.isHidden = false
                     })
                     self.reviewsTableView.es_stopPullToRefresh()
+                }
+                
+                if self.reviews.count != 0 {
+                    self.errorButton.isUserInteractionEnabled = false
+                } else {
+                    self.errorButton.setTitle("Network Error! Tap to Refresh", for: .normal)
                 }
 
             }

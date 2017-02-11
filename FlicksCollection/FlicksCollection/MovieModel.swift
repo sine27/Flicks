@@ -24,18 +24,18 @@ class MovieModel: NSObject {
     
     var adult : Bool
     
-    init (original_title : String, overview : String, backdrop_path : String, poster_path : String,  release_date : String, original_language : String, id : Int, popularity : Double, vote_average : Double, vote_count : Int, runtime : Int, adult : Bool) {
-        self.original_title = original_title
-        self.overview = overview
-        self.backdrop_path = backdrop_path
-        self.poster_path = poster_path
-        self.release_date = release_date
-        self.original_language = original_language
+    init (original_title : String?, overview : String?, backdrop_path : String?, poster_path : String?,  release_date : String?, original_language : String?, id : Int, popularity : Double?, vote_average : Double?, vote_count : Int?, runtime : Int?, adult : Bool?) {
+        self.original_title = original_title ?? "No Title"
+        self.overview = overview ?? "No overview found"
+        self.backdrop_path = backdrop_path ?? ""
+        self.poster_path = poster_path ?? ""
+        self.release_date = release_date ?? ""
+        self.original_language = original_language ?? ""
         self.id = id
-        self.popularity = popularity
-        self.vote_average = vote_average
-        self.vote_count = vote_count
-        self.runtime = runtime
-        self.adult = adult
+        self.popularity = popularity ?? 0.0
+        self.vote_average = vote_average ?? 0.0
+        self.vote_count = vote_count ?? 0
+        self.runtime = runtime ?? 0
+        self.adult = adult ?? false
     }
 }
