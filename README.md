@@ -42,8 +42,7 @@ Here's a walkthrough of implemented user stories:
 
 version 2.4 review table | version 2.2 tab view & zoom image | version 2.1 detail view and filter
 :-------------------------:|:-------------------------:|:-------------------------:
-<img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-4review.gif' title='tip calculation' width='270' alt='Video Walkthrough' /> | <img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-1detail&filter.gif' title='tip calculation' width='200' alt='Video Walkthrough' /> | <img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-2tabView.gif' title='tip calculation' width='200' alt='Video Walkthrough' />
-
+<img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-4review.gif' title='tip calculation' width='270' alt='Video Walkthrough' /> | <img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-2tabView.gif' title='tip calculation' width='200' alt='Video Walkthrough' /> | <img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-1detail&filter.gif' title='tip calculation' width='200' alt='Video Walkthrough' />
 ## Notes
 
 ```swift
