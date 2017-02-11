@@ -44,13 +44,9 @@ version 2.4 review table
 
 <img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-4review.gif' title='tip calculation' width='270' alt='Video Walkthrough' />
 
-version 2.2 tab view & zoom image
-
-<img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-2tabView.gif' title='tip calculation' width='150' alt='Video Walkthrough' />
-
-version 2.1 detail view enabled with animation and custom navigation bar & filter (change by sorting key)
-
-<img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-1detail&filter.gif' title='tip calculation' width='150' alt='Video Walkthrough' />
+version 2.1 detail view and filter             |  version 2.2 tab view & zoom image
+:-------------------------:|:-------------------------:
+<img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-2tabView.gif' title='tip calculation' width='200' alt='Video Walkthrough' />  |  <img src='https://github.com/sine27/Flicks/blob/master/demo/assign2-1detail&filter.gif' title='tip calculation' width='200' alt='Video Walkthrough' />
 
 ## Notes
 
