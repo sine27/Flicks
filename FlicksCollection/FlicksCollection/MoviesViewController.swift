@@ -39,6 +39,11 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     @IBOutlet weak var menuBarButton: UIBarButtonItem!
     
+    @IBOutlet weak var errorButton: UIButton!
+    
+    @IBOutlet weak var errorToTop: NSLayoutConstraint!
+    
+    
     // All movies info from database
     var movies: [NSDictionary] = []
     
@@ -129,10 +134,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         filterButton.setTitle("Date", for: .normal)
         hideDrodown()
         isSorting = true
-        helper.activityIndicator(sender: self)
         sortRequest = "\(requestPrefix)/discover/movie?api_key=\(apiKey)&sort_by=release_date.desc"
-        request(identity: 0, urlString: sortRequest)
-        helper.scrollToTop(collectionView : moviesCollectionView)
+        moviesCollectionView.es_startPullToRefresh()
     }
     
     @IBAction func popularTapped(_ sender: UIButton) {
@@ -141,10 +144,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         filterButton.setTitle("Popularity", for: .normal)
         isSorting = true
         hideDrodown()
-        helper.activityIndicator(sender: self)
         sortRequest = "\(requestPrefix)/discover/movie?api_key=\(apiKey)&sort_by=popularity.desc"
-        request(identity: 0, urlString: sortRequest)
-        helper.scrollToTop(collectionView : moviesCollectionView)
+        moviesCollectionView.es_startPullToRefresh()
     }
     @IBAction func rateTapped(_ sender: UIButton) {
         resetFilterButtonColor()
@@ -152,10 +153,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         filterButton.setTitle("Rate", for: .normal)
         hideDrodown()
         isSorting = true
-        helper.activityIndicator(sender: self)
         sortRequest = "\(requestPrefix)/discover/movie?api_key=\(apiKey)&sort_by=vote_average.desc"
-        request(identity: 0, urlString: sortRequest)
-        helper.scrollToTop(collectionView : moviesCollectionView)
+        moviesCollectionView.es_startPullToRefresh()
     }
     
     @IBAction func nowPlayingTapped(_ sender: UIButton) {
@@ -163,9 +162,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         sender.setTitleColor(highlightColor, for: .normal)
         filterButton.setTitle("Now Playing", for: .normal)
         hideDrodown()
-        helper.activityIndicator(sender: self)
-        request(identity: 0, urlString: movieRequest)
-        helper.scrollToTop(collectionView : moviesCollectionView)
+        isSorting = false
+        moviesCollectionView.es_startPullToRefresh()
     }
     
     func resetFilterButtonColor () {
@@ -208,6 +206,9 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         
         searchBar.isHidden = true
         
+        // error button
+        errorButton.isHidden = true
+        
         // hide searchBar when search button not clicked
         collectionToSearch.constant = -44
         
@@ -216,8 +217,15 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         dropDownImg.layer.cornerRadius = 10
         dropdownView.isHidden = true
         
+        nowPlayingButton.setTitleColor(highlightColor, for: .normal)
+        
+        moviesCollectionView.expriedTimeInterval = 10.0
+        moviesCollectionView.es_autoPullToRefresh()
+        
         /// Custom refreshController
         self.moviesCollectionView.es_addPullToRefresh(animator: headerAnimator) {
+            
+            self.helper.scrollToTop(collectionView : self.moviesCollectionView)
             
             if self.searchActive && self.searchRequest != "" {
                 self.searchPage = 1
@@ -238,21 +246,15 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
             self.isMoreDataLoading = true
             
             if self.searchActive && self.searchRequest != "" {
-                self.searchPage += 1
                 self.request(identity: 0, urlString: self.searchRequest)
             }
             else if self.isSorting {
-                self.sortPage += 1
                 self.request(identity: 0, urlString: self.sortRequest)
             }
             else {
-                self.moviePage += 1
                 self.request(identity: 0, urlString: self.movieRequest)
             }
         }
-
-        moviesCollectionView.expriedTimeInterval = 10.0
-        moviesCollectionView.es_autoPullToRefresh()
         
         // requst for data
         self.request(identity: 0, urlString: movieRequest)
@@ -391,14 +393,18 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         
         searchBar.resignFirstResponder()
         
+        searchPage = 1
+        
         helper.removeNotifyLabelCenter()
+        
+//        moviesCollectionView.es_startPullToRefresh()
+        
+        helper.scrollToTop(collectionView: moviesCollectionView)
         
         helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        helper.activityIndicator(sender: self)
         
         if searchBar.text != nil  {
             
@@ -407,7 +413,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
             
             searchRequest = "\(requestPrefix)/search/movie?api_key=\(apiKey)&query=\(query)&page=\(searchPage)"
             
-            request(identity: 0, urlString: searchRequest)
+            moviesCollectionView.es_startPullToRefresh()
         }
         
         searchBar.resignFirstResponder()
@@ -445,6 +451,10 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         
         helper.removeNotifyLabelCenter()
         
+        UIView.animate(withDuration: 1.0, animations: {
+            self.errorButton.isHidden = true
+        })
+        
         var requestString : String
         
         if searchActive {
@@ -472,7 +482,21 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                 
                 /// stop loading more data
                 if self.isMoreDataLoading {
-                    
+                    self.errorToTop.constant = self.view.frame.height - 158
+                    self.errorButton.setTitle("Network Error! Pull to Load", for: .normal)
+                    UIView.animate(withDuration: 0.8, animations: {
+                        self.loadViewIfNeeded()
+                        self.errorButton.isHidden = false
+                    })
+                    self.moviesCollectionView.es_stopLoadingMore()
+                }
+                else {
+                    self.errorToTop.constant = 0
+                    self.errorButton.setTitle("Network Error! Pull to Refresh", for: .normal)
+                    UIView.animate(withDuration: 0.8, animations: {
+                        self.errorButton.isHidden = false
+                    })
+                    self.moviesCollectionView.es_stopPullToRefresh()
                 }
             }
                 
@@ -505,14 +529,17 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                 if searchActive {
                     NSLog("Data Loading [Success] search more \(self.searchPage)")
                     self.searchResults += dataDictionary["results"] as! [NSDictionary]
+                    self.searchPage += 1
                 }
                 else if isSorting {
                     NSLog("Data Loading [Success] sort more \(self.sortPage)")
                     self.movies += dataDictionary["results"] as! [NSDictionary]
+                    self.sortPage += 1
                 }
                 else {
                     NSLog("Data Loading [Success] load more \(self.moviePage)")
                     self.movies += dataDictionary["results"] as! [NSDictionary]
+                    self.moviePage += 1
                 }
                 
                 // If common end
@@ -524,14 +551,17 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
             if searchActive {
                 NSLog("Data Loading [Success] Search")
                 self.searchResults = dataDictionary["results"] as! [NSDictionary]
+                self.searchPage = 2
             }
             if isSorting {
                 NSLog("Data Loading [Success] Sort")
                 self.movies = dataDictionary["results"] as! [NSDictionary]
+                self.sortPage = 2
             }
             else {
                 NSLog("Data Loading [Success] load")
                 self.movies = dataDictionary["results"] as! [NSDictionary]
+                self.moviePage = 2
             }
             
             // Set ignore footer or not

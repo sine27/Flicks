@@ -29,9 +29,9 @@ class HeaderAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol, ESRe
     fileprivate let imageView: UIImageView = {
         let imageView = UIImageView.init()
         if #available(iOS 8, *) {
-            imageView.image = UIImage(named: "icon_pull_to_refresh_arrow", in: Bundle(for: ESRefreshHeaderAnimator.self), compatibleWith: nil)
+            imageView.image = UIImage(named: "refreshButtonImg", in: Bundle(for: ESRefreshHeaderAnimator.self), compatibleWith: nil)
         } else {
-            imageView.image = UIImage(named: "icon_pull_to_refresh_arrow")
+            imageView.image = UIImage(named: "refreshButtonImg")
         }
         return imageView
     }()
@@ -45,7 +45,7 @@ class HeaderAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol, ESRe
     }()
     
     fileprivate let indicatorView: UIActivityIndicatorView = {
-        let indicatorView = UIActivityIndicatorView.init(activityIndicatorStyle: .gray)
+        let indicatorView = UIActivityIndicatorView.init(activityIndicatorStyle: .white)
         indicatorView.isHidden = true
         return indicatorView
     }()

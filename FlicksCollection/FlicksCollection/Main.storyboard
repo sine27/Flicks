@@ -322,15 +322,27 @@
                                     <outlet property="delegate" destination="s5L-s1-sLq" id="opQ-5z-akC"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="SYz-mx-l8V">
+                                <rect key="frame" x="0.0" y="64" width="320" height="45"/>
+                                <color key="backgroundColor" red="0.88626269040000005" green="0.63642339910000001" blue="0.23511367590000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="8Va-u7-9H4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                <state key="normal" title="Network Error! Pull to Refresh"/>
+                            </button>
                         </subviews>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="cu2-QB-K4p" firstAttribute="centerX" secondItem="Hwp-rd-rtU" secondAttribute="centerX" constant="-1" id="3J3-qn-sGO"/>
                             <constraint firstItem="nv6-Nc-sXT" firstAttribute="width" secondItem="Hwp-rd-rtU" secondAttribute="width" id="4yX-zK-pDc"/>
+                            <constraint firstItem="SYz-mx-l8V" firstAttribute="width" secondItem="Hwp-rd-rtU" secondAttribute="width" id="Fr1-U4-bwI"/>
                             <constraint firstItem="nv6-Nc-sXT" firstAttribute="centerY" secondItem="Hwp-rd-rtU" secondAttribute="centerY" id="IJJ-if-d8c"/>
+                            <constraint firstItem="SYz-mx-l8V" firstAttribute="centerX" secondItem="Hwp-rd-rtU" secondAttribute="centerX" id="KrK-eY-jvB"/>
                             <constraint firstItem="cu2-QB-K4p" firstAttribute="centerY" secondItem="Hwp-rd-rtU" secondAttribute="centerY" constant="32" id="LJN-YL-ffy"/>
                             <constraint firstItem="cu2-QB-K4p" firstAttribute="height" secondItem="Hwp-rd-rtU" secondAttribute="height" constant="-64" id="PPS-gc-HDg"/>
                             <constraint firstItem="nv6-Nc-sXT" firstAttribute="centerX" secondItem="Hwp-rd-rtU" secondAttribute="centerX" id="QcE-g9-oMR"/>
+                            <constraint firstItem="SYz-mx-l8V" firstAttribute="top" secondItem="lyA-od-oP7" secondAttribute="bottom" id="SFR-GH-4vQ"/>
                             <constraint firstItem="cu2-QB-K4p" firstAttribute="width" secondItem="Hwp-rd-rtU" secondAttribute="width" constant="-10" id="WdQ-ZA-ddi"/>
                             <constraint firstItem="nv6-Nc-sXT" firstAttribute="height" secondItem="Hwp-rd-rtU" secondAttribute="height" id="pcm-Cw-RNe"/>
                         </constraints>
@@ -338,6 +350,8 @@
                     <navigationItem key="navigationItem" title="Reviews" id="trs-gf-gxg"/>
                     <connections>
                         <outlet property="backgroundImage" destination="nv6-Nc-sXT" id="v9T-20-rmO"/>
+                        <outlet property="errorButton" destination="SYz-mx-l8V" id="Bh8-7u-J6a"/>
+                        <outlet property="errorToTop" destination="SFR-GH-4vQ" id="mxi-On-L17"/>
                         <outlet property="reviewsTableView" destination="cu2-QB-K4p" id="4Ys-wB-yuL"/>
                     </connections>
                 </viewController>
@@ -488,18 +502,30 @@
                                     <constraint firstItem="bbL-3G-zKf" firstAttribute="centerX" secondItem="Jxf-3s-Jq9" secondAttribute="centerX" id="oil-UE-AIS"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sce-E9-kLh">
+                                <rect key="frame" x="0.0" y="64" width="320" height="45"/>
+                                <color key="backgroundColor" red="0.8862626903553299" green="0.63642339906733825" blue="0.23511367588362631" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="lbd-Bh-8y8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                <state key="normal" title="Network Error! Pull to Refresh"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <color key="tintColor" red="0.88844384519999997" green="0.88844384519999997" blue="0.88844384519999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="bg6-71-KeZ" firstAttribute="top" secondItem="UJS-I5-qLS" secondAttribute="bottom" id="Haf-DB-gRZ"/>
                             <constraint firstItem="UJS-I5-qLS" firstAttribute="top" secondItem="mic-G4-Ltb" secondAttribute="bottom" id="ITu-HZ-vI6"/>
+                            <constraint firstItem="sce-E9-kLh" firstAttribute="top" secondItem="G2v-yL-uqs" secondAttribute="bottom" id="RKB-jb-NkH"/>
                             <constraint firstItem="Jxf-3s-Jq9" firstAttribute="leading" secondItem="1em-cV-TKN" secondAttribute="leadingMargin" constant="-12" id="U8l-eT-XxN"/>
                             <constraint firstItem="mic-G4-Ltb" firstAttribute="top" secondItem="G2v-yL-uqs" secondAttribute="bottom" id="V41-dn-Kf0"/>
                             <constraint firstItem="mic-G4-Ltb" firstAttribute="centerX" secondItem="1em-cV-TKN" secondAttribute="centerX" id="Vau-m3-Kb6"/>
                             <constraint firstItem="mic-G4-Ltb" firstAttribute="width" secondItem="1em-cV-TKN" secondAttribute="width" id="bM6-vR-EQc"/>
+                            <constraint firstItem="sce-E9-kLh" firstAttribute="centerX" secondItem="1em-cV-TKN" secondAttribute="centerX" id="cL2-Q0-yJP"/>
                             <constraint firstItem="UJS-I5-qLS" firstAttribute="width" secondItem="1em-cV-TKN" secondAttribute="width" id="cgg-hS-M1O"/>
                             <constraint firstItem="Jxf-3s-Jq9" firstAttribute="top" secondItem="G2v-yL-uqs" secondAttribute="bottom" id="jBp-pb-etd"/>
+                            <constraint firstItem="sce-E9-kLh" firstAttribute="width" secondItem="1em-cV-TKN" secondAttribute="width" id="nIZ-wZ-pRa"/>
                             <constraint firstItem="UJS-I5-qLS" firstAttribute="centerX" secondItem="1em-cV-TKN" secondAttribute="centerX" id="sxc-02-g5P"/>
                         </constraints>
                     </view>
@@ -527,6 +553,8 @@
                         <outlet property="collectionToSearch" destination="ITu-HZ-vI6" id="DM9-2W-Pyz"/>
                         <outlet property="dropDownImg" destination="qtn-tb-a6K" id="4Xw-O5-Ac4"/>
                         <outlet property="dropdownView" destination="Jxf-3s-Jq9" id="GZ9-5t-cFM"/>
+                        <outlet property="errorButton" destination="sce-E9-kLh" id="sfC-wx-Qrr"/>
+                        <outlet property="errorToTop" destination="RKB-jb-NkH" id="Hdj-2U-ytk"/>
                         <outlet property="filterButton" destination="hEz-Oh-TWL" id="FfA-Pg-VgC"/>
                         <outlet property="menuBarButton" destination="ioE-LQ-NKn" id="DRL-7c-k34"/>
                         <outlet property="moviesCollectionView" destination="UJS-I5-qLS" id="iuN-Nf-pNq"/>
@@ -613,6 +641,15 @@
                                     <outlet property="delegate" destination="C0u-Q3-0hR" id="2ki-mr-VG8"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="WQj-NW-Y2Y">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                <color key="backgroundColor" red="0.88626269040000005" green="0.63642339910000001" blue="0.23511367590000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="wIB-9Z-eOc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                <state key="normal" title="Network Error! Pull to Refresh"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <color key="tintColor" red="0.88844384519999997" green="0.88844384519999997" blue="0.88844384519999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -623,6 +660,9 @@
                             <constraint firstItem="5VJ-SE-wq0" firstAttribute="width" secondItem="phI-5L-cts" secondAttribute="width" id="QUk-El-eJ4"/>
                             <constraint firstItem="bQ6-iw-A06" firstAttribute="top" secondItem="4oQ-zr-eNh" secondAttribute="bottom" id="UsJ-Bx-rH5"/>
                             <constraint firstItem="XFx-Ct-JUQ" firstAttribute="top" secondItem="5VJ-SE-wq0" secondAttribute="bottom" id="Wlw-oV-gLp"/>
+                            <constraint firstItem="WQj-NW-Y2Y" firstAttribute="width" secondItem="phI-5L-cts" secondAttribute="width" id="mJY-p0-ej9"/>
+                            <constraint firstItem="WQj-NW-Y2Y" firstAttribute="centerX" secondItem="phI-5L-cts" secondAttribute="centerX" id="nxz-Pf-9gz"/>
+                            <constraint firstItem="WQj-NW-Y2Y" firstAttribute="top" secondItem="4oQ-zr-eNh" secondAttribute="bottom" id="tTT-oc-ukq"/>
                             <constraint firstItem="bQ6-iw-A06" firstAttribute="width" secondItem="phI-5L-cts" secondAttribute="width" id="z8S-tC-Os2"/>
                         </constraints>
                     </view>
@@ -647,6 +687,8 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="collectionToSearch" destination="2eN-Qn-Xfu" id="MRr-n8-vYQ"/>
+                        <outlet property="errorButton" destination="WQj-NW-Y2Y" id="m0N-ND-gcB"/>
+                        <outlet property="errorToTop" destination="tTT-oc-ukq" id="XDE-CH-6qJ"/>
                         <outlet property="moviesCollectionView" destination="5VJ-SE-wq0" id="dYW-S1-edS"/>
                         <outlet property="searchBar" destination="bQ6-iw-A06" id="Pvr-dJ-Jue"/>
                         <outlet property="searchBarButton" destination="ElS-9t-Dsi" id="7gw-ZD-pUg"/>

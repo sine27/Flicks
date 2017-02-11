@@ -23,6 +23,10 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var backgroundImage: UIImageView!
     
+    @IBOutlet weak var errorButton: UIButton!
+    
+    @IBOutlet weak var errorToTop: NSLayoutConstraint!
+    
     let helper = HelperFunctions()
     
     var headerAnimator = HeaderAnimator()
@@ -146,6 +150,11 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // url request for data
     func request () {
+        
+        UIView.animate(withDuration: 1.0, animations: {
+            self.errorButton.isHidden = true
+        })
+        
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = URL(string: "https://api.themoviedb.org/3/movie/\(movie.id)/reviews?api_key=\(apiKey)&page=\(page)")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
@@ -154,12 +163,36 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             self.helper.stopActivityIndicator()
             
-            if let data = data {
+            if let error = error {
+                NSLog("Review Loading [Fail] \(error.localizedDescription)")
+                
+                /// stop loading more data
+                if self.isMoreDataLoading {
+                    self.errorToTop.constant = self.view.frame.height - 158
+                    self.errorButton.setTitle("Network Error! Pull to Load", for: .normal)
+                    UIView.animate(withDuration: 0.8, animations: {
+                        self.loadViewIfNeeded()
+                        self.errorButton.isHidden = false
+                    })
+                    self.reviewsTableView.es_stopLoadingMore()
+                }
+                else {
+                    self.errorToTop.constant = 0
+                    self.errorButton.setTitle("Network Error! Pull to Refresh", for: .normal)
+                    UIView.animate(withDuration: 0.8, animations: {
+                        self.errorButton.isHidden = false
+                    })
+                    self.reviewsTableView.es_stopPullToRefresh()
+                }
+
+            }
+            
+            else if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     
                     if self.isMoreDataLoading {
                         
-                        NSLog("Data Loading [Success] page\(self.page)")
+                        NSLog("Review Loading [Success] page\(self.page)")
                         
                         if ( dataDictionary["results"] as! [NSDictionary] ) == [] {
                             // If no more data
@@ -175,7 +208,7 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     
                     else {
                         
-                        NSLog("Data Loading [Success] refresh : page\(self.page)")
+                        NSLog("Review Loading [Success] refresh : page\(self.page)")
                         
                         self.reviews = dataDictionary["results"] as! [NSDictionary]
                         

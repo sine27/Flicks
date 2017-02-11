@@ -16,10 +16,10 @@ class FooterAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol {
     open var loadingDescription: String     = "Loading..."
     
     open var view: UIView { return self }
-    open var duration: TimeInterval = 0.3
+    open var duration: TimeInterval = 0.6
     open var insets: UIEdgeInsets = UIEdgeInsets.zero
-    open var trigger: CGFloat = 42.0
-    open var executeIncremental: CGFloat = 42.0
+    open var trigger: CGFloat = 60
+    open var executeIncremental: CGFloat = 42
     open var state: ESRefreshViewState = .pullToRefresh
     
     fileprivate let titleLabel: UILabel = {
@@ -31,7 +31,7 @@ class FooterAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol {
     }()
     
     fileprivate let indicatorView: UIActivityIndicatorView = {
-        let indicatorView = UIActivityIndicatorView.init(activityIndicatorStyle: .gray)
+        let indicatorView = UIActivityIndicatorView.init(activityIndicatorStyle: .white)
         indicatorView.isHidden = true
         return indicatorView
     }()
@@ -92,7 +92,7 @@ class FooterAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol {
         let h = s.height
         
         titleLabel.sizeToFit()
-        titleLabel.center = CGPoint.init(x: w / 2.0, y: h / 2.0 - 5.0)
+        titleLabel.center = CGPoint.init(x: w / 2.0, y: h / 2.0 - 10.0)
         indicatorView.center = CGPoint.init(x: titleLabel.frame.origin.x - 18.0, y: titleLabel.center.y)
     }
 }

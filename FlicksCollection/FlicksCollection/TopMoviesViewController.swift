@@ -23,6 +23,10 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     
     @IBOutlet weak var searchBarButton: UIBarButtonItem!
     
+    @IBOutlet weak var errorButton: UIButton!
+    
+    @IBOutlet weak var errorToTop: NSLayoutConstraint!
+    
     // All movies info from database
     var movies: [NSDictionary] = []
     
@@ -55,7 +59,6 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     
     var searchRequest = ""
     // <<<<< variables
-    
     
     // hide navigationBar when searching
     override func viewWillAppear(_ animated: Bool) {
@@ -93,6 +96,9 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
         // hide searchBar when search button not clicked
         collectionToSearch.constant = -44
         
+        moviesCollectionView.expriedTimeInterval = 10.0
+        moviesCollectionView.es_autoPullToRefresh()
+        
         /// Custom refreshController
         self.moviesCollectionView.es_addPullToRefresh(animator: headerAnimator) {
             
@@ -111,17 +117,12 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
             self.isMoreDataLoading = true
             
             if self.searchActive && self.searchRequest != "" {
-                self.searchPage += 1
                 self.request(identity: 0, urlString: self.searchRequest)
             }
             else {
-                self.moviePage += 1
                 self.request(identity: 0, urlString: self.movieRequest)
             }
         }
-        
-        moviesCollectionView.expriedTimeInterval = 10.0
-        moviesCollectionView.es_autoPullToRefresh()
         
         // requst for data
         self.request(identity: 0, urlString: movieRequest)
@@ -243,6 +244,7 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     
     func autoHideKeyboardWhenTapOutside(sender: UITapGestureRecognizer) {
         moviesCollectionView.removeGestureRecognizer(tapGesture)
+        moviesCollectionView.es_removeRefreshFooter()
         view.endEditing(true)
     }
     
@@ -262,13 +264,18 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
         
         searchBar.resignFirstResponder()
         
+        searchPage = 1
+        
         helper.removeNotifyLabelCenter()
         
-        self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
+//        moviesCollectionView.es_startPullToRefresh()
+        
+        helper.scrollToTop(collectionView: moviesCollectionView)
+        
+        helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        helper.activityIndicator(sender: self)
         
         if searchBar.text != nil  {
             
@@ -277,7 +284,7 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
             
             searchRequest = "\(requestPrefix)/search/movie?api_key=\(apiKey)&query=\(query)&page=\(searchPage)"
             
-            request(identity: 0, urlString: searchRequest)
+            moviesCollectionView.es_startPullToRefresh()
         }
         
         searchBar.resignFirstResponder()
@@ -314,6 +321,10 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
         
         helper.removeNotifyLabelCenter()
         
+        UIView.animate(withDuration: 1.0, animations: {
+            self.errorButton.isHidden = true
+        })
+        
         var requestString : String
         
         if searchActive {
@@ -339,7 +350,21 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
                 
                 /// stop loading more data
                 if self.isMoreDataLoading {
-                    
+                    self.errorToTop.constant = self.view.frame.height - 158
+                    self.errorButton.setTitle("Network Error! Pull to Load", for: .normal)
+                    UIView.animate(withDuration: 0.8, animations: {
+                        self.loadViewIfNeeded()
+                        self.errorButton.isHidden = false
+                    })
+                    self.moviesCollectionView.es_stopLoadingMore()
+                }
+                else {
+                    self.errorToTop.constant = 0
+                    self.errorButton.setTitle("Network Error! Pull to Refresh", for: .normal)
+                    UIView.animate(withDuration: 0.8, animations: {
+                        self.errorButton.isHidden = false
+                    })
+                    self.moviesCollectionView.es_stopPullToRefresh()
                 }
             }
                 
@@ -372,10 +397,12 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
                 if searchActive {
                     NSLog("Data Loading [Success] search more \(self.searchPage)")
                     self.searchResults += dataDictionary["results"] as! [NSDictionary]
+                    self.searchPage += 1
                 }
                 else {
                     NSLog("Data Loading [Success] load more \(self.moviePage)")
                     self.movies += dataDictionary["results"] as! [NSDictionary]
+                    self.moviePage += 1
                 }
                 
                 // If common end
@@ -387,10 +414,12 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
             if searchActive {
                 NSLog("Data Loading [Success] Search")
                 self.searchResults = dataDictionary["results"] as! [NSDictionary]
+                self.searchPage = 2
             }
             else {
                 NSLog("Data Loading [Success] load")
                 self.movies = dataDictionary["results"] as! [NSDictionary]
+                self.moviePage = 2
             }
             
             // Set ignore footer or not
