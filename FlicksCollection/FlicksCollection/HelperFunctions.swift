@@ -60,6 +60,8 @@ class HelperFunctions: NSObject {
         
         // 0 : Not Fount
         // 1 : Reach The End
+        subviewSetup(sender: sender)
+        
         self.notifyLabel.alpha = 1
         notifyLabel.center.y = sender.view.center.y
         notifyLabel.text = notificationLabel

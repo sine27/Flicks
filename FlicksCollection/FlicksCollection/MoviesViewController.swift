@@ -29,6 +29,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     @IBOutlet weak var recentButton: UIButton!
     
+    @IBOutlet weak var nowPlayingButton: UIButton!
+    
     @IBOutlet weak var popularityButton: UIButton!
     
     @IBOutlet weak var rateButton: UIButton!
@@ -53,6 +55,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     // if seach bar is activated
     var searchActive = false
     
+    var isSorting = false
+    
     // dropdown menu dropped
     var isDropped = false
     
@@ -60,10 +64,24 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     var isMoreDataLoading = false
     
     // page number for request +1 when request data successfully
-    var page = 1
+    var moviePage = 1
+    
+    var searchPage = 1
+    
+    var sortPage = 1
     
     // orange color
     let highlightColor = UIColor(red: 1, green: 149/255, blue: 0, alpha: 1)
+    
+    let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+    
+    var requestPrefix = "https://api.themoviedb.org/3"
+    
+    var movieRequest = ""
+    
+    var searchRequest = ""
+    
+    var sortRequest = ""
     
     // <<<<< variables
     
@@ -110,7 +128,10 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         sender.setTitleColor(highlightColor, for: .normal)
         filterButton.setTitle("Date", for: .normal)
         hideDrodown()
-        sortKey(byKey: "release_date")
+        isSorting = true
+        helper.activityIndicator(sender: self)
+        sortRequest = "\(requestPrefix)/discover/movie?api_key=\(apiKey)&sort_by=release_date.desc"
+        request(identity: 0, urlString: sortRequest)
         helper.scrollToTop(collectionView : moviesCollectionView)
     }
     
@@ -118,8 +139,11 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         resetFilterButtonColor()
         sender.setTitleColor(highlightColor, for: .normal)
         filterButton.setTitle("Popularity", for: .normal)
+        isSorting = true
         hideDrodown()
-        sortKey(byKey: "popularity")
+        helper.activityIndicator(sender: self)
+        sortRequest = "\(requestPrefix)/discover/movie?api_key=\(apiKey)&sort_by=popularity.desc"
+        request(identity: 0, urlString: sortRequest)
         helper.scrollToTop(collectionView : moviesCollectionView)
     }
     @IBAction func rateTapped(_ sender: UIButton) {
@@ -127,7 +151,20 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         sender.setTitleColor(highlightColor, for: .normal)
         filterButton.setTitle("Rate", for: .normal)
         hideDrodown()
-        sortKey(byKey: "vote_average")
+        isSorting = true
+        helper.activityIndicator(sender: self)
+        sortRequest = "\(requestPrefix)/discover/movie?api_key=\(apiKey)&sort_by=vote_average.desc"
+        request(identity: 0, urlString: sortRequest)
+        helper.scrollToTop(collectionView : moviesCollectionView)
+    }
+    
+    @IBAction func nowPlayingTapped(_ sender: UIButton) {
+        resetFilterButtonColor()
+        sender.setTitleColor(highlightColor, for: .normal)
+        filterButton.setTitle("Now Playing", for: .normal)
+        hideDrodown()
+        helper.activityIndicator(sender: self)
+        request(identity: 0, urlString: movieRequest)
         helper.scrollToTop(collectionView : moviesCollectionView)
     }
     
@@ -135,6 +172,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         rateButton.setTitleColor(.white, for: .normal)
         recentButton.setTitleColor(.white, for: .normal)
         popularityButton.setTitleColor(.white, for: .normal)
+        nowPlayingButton.setTitleColor(.white, for: .normal)
     }
     
     // hide navigationBar when searching
@@ -149,6 +187,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     // view setup
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        movieRequest = "\(requestPrefix)/movie/now_playing?api_key=\(apiKey)"
         
         // setup collection view
         moviesCollectionView.delegate = self
@@ -168,8 +208,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         
         searchBar.isHidden = true
         
-        popularityButton.setTitleColor(highlightColor, for: .normal)
-        
         // hide searchBar when search button not clicked
         collectionToSearch.constant = -44
         
@@ -178,30 +216,46 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         dropDownImg.layer.cornerRadius = 10
         dropdownView.isHidden = true
         
-        
-        
         /// Custom refreshController
         self.moviesCollectionView.es_addPullToRefresh(animator: headerAnimator) {
             
-            print("func")
-            
-            self.page = 1
-            self.filterButton.setTitle("Now Playing", for: .normal)
-            self.resetFilterButtonColor()
-            self.request()
+            if self.searchActive && self.searchRequest != "" {
+                self.searchPage = 1
+                self.request(identity: 0, urlString: self.searchRequest)
+            }
+            else if self.isSorting {
+                self.sortPage = 1
+                self.request(identity: 0, urlString: self.sortRequest)
+            }
+            else {
+                self.moviePage = 1
+                self.request(identity: 0, urlString: self.movieRequest)
+            }
         }
         
         self.moviesCollectionView.es_addInfiniteScrolling(animator: footerAnimator) {
             
             self.isMoreDataLoading = true
-            self.request()
+            
+            if self.searchActive && self.searchRequest != "" {
+                self.searchPage += 1
+                self.request(identity: 0, urlString: self.searchRequest)
+            }
+            else if self.isSorting {
+                self.sortPage += 1
+                self.request(identity: 0, urlString: self.sortRequest)
+            }
+            else {
+                self.moviePage += 1
+                self.request(identity: 0, urlString: self.movieRequest)
+            }
         }
-        
+
         moviesCollectionView.expriedTimeInterval = 10.0
         moviesCollectionView.es_autoPullToRefresh()
         
         // requst for data
-        request()
+        self.request(identity: 0, urlString: movieRequest)
     }
     
     override func didReceiveMemoryWarning() {
@@ -343,6 +397,19 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        helper.activityIndicator(sender: self)
+        
+        if searchBar.text != nil  {
+            
+            let query = searchBar.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+            print(query)
+            
+            searchRequest = "\(requestPrefix)/search/movie?api_key=\(apiKey)&query=\(query)&page=\(searchPage)"
+            
+            request(identity: 0, urlString: searchRequest)
+        }
+        
         searchBar.resignFirstResponder()
     }
     
@@ -369,45 +436,28 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     // <<<<< search bar controller
     
     // MARK : helper functions >>>>>
-    
-    func sortKey(byKey : String) {
-        
-        if byKey == "release_date" {
-            sortByDate()
-        } else {
-            movies.sort {
-                item1, item2 in
-                let data1 = item1[byKey] as! Double
-                let data2 = item2[byKey] as! Double
-                return data1 > data2
-            }
-        }
-        helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
-    }
-    
-    func sortByDate () {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        movies.sort {
-            item1, item2 in
-            let data1 = item1["release_date"] as! String
-            let data2 = item2["release_date"] as! String
-            let date1 = dateFormatter.date(from: data1)
-            let date2 = dateFormatter.date(from: data2)
-            return date1! > date2!
-        }
-    }
+
     
     // MARK : JSON request >>>
-    func request () {
+    func request (identity : Int, urlString : String) {
         
         NSLog("Data Loading...")
         
         helper.removeNotifyLabelCenter()
         
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)&page=\(page)")!
+        var requestString : String
+        
+        if searchActive {
+            requestString = "\(self.searchRequest)&page=\(self.searchPage)"
+        }
+        else if isSorting {
+            requestString = "\(self.sortRequest)&page=\(self.sortPage)"
+        }
+        else {
+            requestString = "\(self.movieRequest)&page=\(self.moviePage)"
+        }
+        
+        let url = URL(string: requestString)!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
@@ -418,7 +468,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                 
                 NSLog("Data Loading [Fail] \(error.localizedDescription)")
                 
-                self.searchBar.isUserInteractionEnabled = false
+                self.searchBarButton.isEnabled = false
                 
                 /// stop loading more data
                 if self.isMoreDataLoading {
@@ -428,49 +478,69 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                 
             else if let data = data {
                 
-                self.searchBar.isUserInteractionEnabled = true
+                self.searchBarButton.isEnabled = true
                 
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     
-                    if self.isMoreDataLoading {
-                        
-                        NSLog("Data Loading [Success] page\(self.page)")
-                        
-                        if ( dataDictionary["results"] as! [NSDictionary] ) == [] {
-                            // If no more data
-                            self.moviesCollectionView.es_noticeNoMoreData()
-                            
-                        } else {
-                            self.movies += dataDictionary["results"] as! [NSDictionary]
-                            
-                            // If common end
-                            self.moviesCollectionView.es_stopLoadingMore()
-                        }
+                    if identity == 0 {
+                        self.assignMovieData(dataDictionary: dataDictionary)
                     }
-                    
-                    else {
-                        
-                        NSLog("Data Loading [Success] refresh : page\(self.page)")
-                        
-                        self.movies = dataDictionary["results"] as! [NSDictionary]
-                        
-                        // Set ignore footer or not
-                        self.moviesCollectionView.es_stopPullToRefresh(ignoreDate: true, ignoreFooter: false)
-                        
-                        self.filterButton.setTitle("Now Playing", for: .normal)
-                    }
-                    
-                    self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
-                    
-                    self.tabBarController?.tabBar.items?[0].badgeValue = "\(self.movies.count)"
                 }
-                self.page += 1
             }
             self.isMoreDataLoading = false
         }
         task.resume()
     }
     // <<< JSON request
+    
+    func assignMovieData (dataDictionary : NSDictionary) {
+        
+        if self.isMoreDataLoading {
+            
+            if ( dataDictionary["results"] as! [NSDictionary] ) == [] {
+                // If no more data
+                self.moviesCollectionView.es_noticeNoMoreData()
+            }
+            else {
+                if searchActive {
+                    NSLog("Data Loading [Success] search more \(self.searchPage)")
+                    self.searchResults += dataDictionary["results"] as! [NSDictionary]
+                }
+                else if isSorting {
+                    NSLog("Data Loading [Success] sort more \(self.sortPage)")
+                    self.movies += dataDictionary["results"] as! [NSDictionary]
+                }
+                else {
+                    NSLog("Data Loading [Success] load more \(self.moviePage)")
+                    self.movies += dataDictionary["results"] as! [NSDictionary]
+                }
+                
+                // If common end
+                self.moviesCollectionView.es_stopLoadingMore()
+            }
+        }
+            
+        else {
+            if searchActive {
+                NSLog("Data Loading [Success] Search")
+                self.searchResults = dataDictionary["results"] as! [NSDictionary]
+            }
+            if isSorting {
+                NSLog("Data Loading [Success] Sort")
+                self.movies = dataDictionary["results"] as! [NSDictionary]
+            }
+            else {
+                NSLog("Data Loading [Success] load")
+                self.movies = dataDictionary["results"] as! [NSDictionary]
+            }
+            
+            // Set ignore footer or not
+            self.moviesCollectionView.es_stopPullToRefresh(ignoreDate: true, ignoreFooter: false)
+            
+        }
+        
+        self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
+    }
     
     // <<<<< helper functions
 }

@@ -21,6 +21,8 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     
     @IBOutlet weak var collectionToSearch: NSLayoutConstraint!
     
+    @IBOutlet weak var searchBarButton: UIBarButtonItem!
+    
     // All movies info from database
     var movies: [NSDictionary] = []
     
@@ -41,7 +43,17 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     var isMoreDataLoading = false
     
     // page number for request +1 when request data successfully
-    var page = 1
+    var moviePage = 1
+    
+    var searchPage = 1
+    
+    let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+    
+    var requestPrefix = "https://api.themoviedb.org/3"
+    
+    var movieRequest = ""
+    
+    var searchRequest = ""
     // <<<<< variables
     
     
@@ -57,6 +69,8 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     // view setup
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        movieRequest = "\(requestPrefix)/movie/top_rated?api_key=\(apiKey)"
         
         // setup collection view
         moviesCollectionView.delegate = self
@@ -82,21 +96,35 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
         /// Custom refreshController
         self.moviesCollectionView.es_addPullToRefresh(animator: headerAnimator) {
             
-            self.page = 1
-            self.request()
+            if self.searchActive && self.searchRequest != "" {
+                self.searchPage = 1
+                self.request(identity: 0, urlString: self.searchRequest)
+            }
+            else {
+                self.moviePage = 1
+                self.request(identity: 0, urlString: self.movieRequest)
+            }
+
         }
         
         self.moviesCollectionView.es_addInfiniteScrolling(animator: footerAnimator) {
-            
             self.isMoreDataLoading = true
-            self.request()
+            
+            if self.searchActive && self.searchRequest != "" {
+                self.searchPage += 1
+                self.request(identity: 0, urlString: self.searchRequest)
+            }
+            else {
+                self.moviePage += 1
+                self.request(identity: 0, urlString: self.movieRequest)
+            }
         }
         
         moviesCollectionView.expriedTimeInterval = 10.0
         moviesCollectionView.es_autoPullToRefresh()
         
         // requst for data
-        request()
+        self.request(identity: 0, urlString: movieRequest)
     }
     
     override func didReceiveMemoryWarning() {
@@ -240,6 +268,18 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        helper.activityIndicator(sender: self)
+        
+        if searchBar.text != nil  {
+            
+            let query = searchBar.text!.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+            print(query)
+            
+            searchRequest = "\(requestPrefix)/search/movie?api_key=\(apiKey)&query=\(query)&page=\(searchPage)"
+            
+            request(identity: 0, urlString: searchRequest)
+        }
+        
         searchBar.resignFirstResponder()
     }
     
@@ -268,14 +308,23 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
     // MARK : helper functions >>>>>
     
     // MARK : JSON request >>>
-    func request () {
+    func request (identity : Int, urlString : String) {
         
         print("Top Data Loading...")
         
         helper.removeNotifyLabelCenter()
         
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)&page=\(page)")!
+        var requestString : String
+        
+        if searchActive {
+            requestString = "\(self.searchRequest)&page=\(self.searchPage)"
+        }
+        else {
+            requestString = "\(self.movieRequest)&page=\(self.moviePage)"
+        }
+        
+        let url = URL(string: requestString)!
+        
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
@@ -286,7 +335,7 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
                 
                 NSLog("Top Data Loading [Fail] \(error.localizedDescription)")
                 
-                self.searchBar.isUserInteractionEnabled = false
+                self.searchBarButton.isEnabled = false
                 
                 /// stop loading more data
                 if self.isMoreDataLoading {
@@ -296,47 +345,62 @@ class TopMoviesViewController: UIViewController, UISearchBarDelegate, UICollecti
                 
             else if let data = data {
                 
-                self.searchBar.isUserInteractionEnabled = true
+                self.searchBarButton.isEnabled = true
                 
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     
-                    if self.isMoreDataLoading {
-                        
-                        NSLog("Top Data Loading [Success] page\(self.page)")
-                        
-                        if ( dataDictionary["results"] as! [NSDictionary] ) == [] {
-                            // If no more data
-                            self.moviesCollectionView.es_noticeNoMoreData()
-                            
-                        } else {
-                            self.movies += dataDictionary["results"] as! [NSDictionary]
-                            
-                            // If common end
-                            self.moviesCollectionView.es_stopLoadingMore()
-                        }
+                    if identity == 0 {
+                        self.assignMovieData(dataDictionary: dataDictionary)
                     }
-                        
-                    else {
-                        
-                        NSLog("Top Data Loading [Success] refresh : page\(self.page)")
-                        
-                        self.movies = dataDictionary["results"] as! [NSDictionary]
-                        
-                        // Set ignore footer or not
-                        self.moviesCollectionView.es_stopPullToRefresh(ignoreDate: true, ignoreFooter: false)
-                    }
-                    
-                    self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
-                    
-                    self.tabBarController?.tabBar.items?[0].badgeValue = "\(self.movies.count)"
                 }
-                self.page += 1
             }
             self.isMoreDataLoading = false
         }
         task.resume()
     }
     // <<< JSON request
+    
+    func assignMovieData (dataDictionary : NSDictionary) {
+        
+        if self.isMoreDataLoading {
+            
+            if ( dataDictionary["results"] as! [NSDictionary] ) == [] {
+                // If no more data
+                self.moviesCollectionView.es_noticeNoMoreData()
+            }
+            else {
+                if searchActive {
+                    NSLog("Data Loading [Success] search more \(self.searchPage)")
+                    self.searchResults += dataDictionary["results"] as! [NSDictionary]
+                }
+                else {
+                    NSLog("Data Loading [Success] load more \(self.moviePage)")
+                    self.movies += dataDictionary["results"] as! [NSDictionary]
+                }
+                
+                // If common end
+                self.moviesCollectionView.es_stopLoadingMore()
+            }
+        }
+            
+        else {
+            if searchActive {
+                NSLog("Data Loading [Success] Search")
+                self.searchResults = dataDictionary["results"] as! [NSDictionary]
+            }
+            else {
+                NSLog("Data Loading [Success] load")
+                self.movies = dataDictionary["results"] as! [NSDictionary]
+            }
+            
+            // Set ignore footer or not
+            self.moviesCollectionView.es_stopPullToRefresh(ignoreDate: true, ignoreFooter: false)
+            
+        }
+        
+        self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
+    }
+    
     
     // <<<<< helper functions
 }

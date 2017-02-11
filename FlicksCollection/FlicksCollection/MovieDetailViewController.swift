@@ -52,6 +52,7 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         print(movie)
         
         self.navigationController?.isNavigationBarHidden = false
@@ -67,6 +68,8 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         
         self.automaticallyAdjustsScrollViewInsets = false
         imgScrollView.isUserInteractionEnabled = false
+        
+        moviePostImg.image = UIImage(named: "noImg")
         
         dataSetup()
     }
@@ -138,7 +141,10 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         moviePostImg.addSubview(blurView)
         
         // assign data
-        if let imageUrlString = movie.value(forKeyPath: "poster_path") as? String {
+        
+        let imageUrlString = movie.poster_path
+        
+        if imageUrlString != "" {
             let newImageUrlString = "https://image.tmdb.org/t/p/w342\(imageUrlString)"
             
             let imageUrl = URL(string: newImageUrlString)!
@@ -151,7 +157,9 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
             
             let largeImageRequest = URLRequest(url: imageUrlOrg)
             
-            moviePostImg.setImageWith(smallImageRequest, placeholderImage: nil, success: { (smallImageRequest, smallImageResponse, smallImage) in
+            let defaultImage = UIImage(named: "noImg")
+            
+            moviePostImg.setImageWith(smallImageRequest, placeholderImage: defaultImage, success: { (smallImageRequest, smallImageResponse, smallImage) in
                 self.moviePostImg.alpha = 0.0
                 self.moviePostImg.image = smallImage;
                 UIView.animate(withDuration: 0.3, animations: { () -> Void in
@@ -189,12 +197,18 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.text = movie.original_title
         
         let dateString = movie.release_date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let myDate = dateFormatter.date(from: dateString)
-        dateFormatter.dateFormat = "MMMM dd, YYYY"
         
-        dateLabel.text = dateFormatter.string(from: myDate!)
+        if dateString == "" {
+            dateLabel.text = "Undefined"
+        }
+        else {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let myDate = dateFormatter.date(from: dateString)
+            dateFormatter.dateFormat = "MMMM dd, YYYY"
+            
+            dateLabel.text = dateFormatter.string(from: myDate!)
+        }
         
         let vote = movie.vote_average
         
@@ -209,6 +223,13 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.moviePostImg
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "showReviews") {
+            let vc = segue.destination as! ReviewViewController
+            vc.movie = self.movie
+        }
     }
     
 }
