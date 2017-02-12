@@ -235,7 +235,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         nowPlayingButton.setTitleColor(highlightColor, for: .normal)
         
         moviesCollectionView.expriedTimeInterval = 10.0
-        moviesCollectionView.es_autoPullToRefresh()
         
         /// Custom refreshController
         self.moviesCollectionView.es_addPullToRefresh(animator: headerAnimator) {

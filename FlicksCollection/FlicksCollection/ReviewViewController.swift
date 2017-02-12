@@ -39,6 +39,10 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var page = 1
     
+    var totalPage = 0
+    
+    var totalResults = 0
+    
     var selectRowAt = -1
     
     var previousSelectRowAt = -1
@@ -87,9 +91,6 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         /// Custom refreshController
         self.reviewsTableView.es_addPullToRefresh(animator: headerAnimator) {
-            
-            print("func")
-            
             self.page = 1
             self.request()
         }
@@ -204,6 +205,19 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
             else if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     
+                    self.totalPage = dataDictionary["total_pages"] as! Int
+                    
+                    self.totalResults = dataDictionary["total_results"] as! Int
+                    
+                    if (self.totalPage <= 1) {
+                        self.reviewsTableView.es_removeRefreshFooter()
+                        self.isMoreDataLoading = false
+                    }
+                    
+                    if self.totalResults > 0 {
+                        self.navigationItem.title = "Reviews (\(self.totalResults))"
+                    }
+                    
                     if self.isMoreDataLoading {
                         
                         NSLog("Review Loading [Success] page\(self.page)")
@@ -217,6 +231,8 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
                             
                             // If common end
                             self.reviewsTableView.es_stopLoadingMore()
+                            
+                            self.reviewsTableView.reloadData()
                         }
                     }
                     
@@ -226,21 +242,15 @@ class ReviewViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         
                         self.reviews = dataDictionary["results"] as! [NSDictionary]
                         
-                        print(self.reviews)
-                        
-                        self.reviewsTableView.reloadData()
-                        
                         if self.reviews.count == 0 {
                             self.helper.showNotifyLabelCenter(sender: self, notificationLabel: "No Comment", notifyType: 0)
                         }
                         
                         // Set ignore footer or not
                         self.reviewsTableView.es_stopPullToRefresh(ignoreDate: true, ignoreFooter: false)
-
+                        
+                        self.reviewsTableView.reloadData()
                     }
-                    
-                    self.reviewsTableView.reloadData()
-                    
                 }
                 self.page += 1
             }

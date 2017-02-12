@@ -450,7 +450,7 @@ open class ESRefreshFooterView: ESRefreshComponent {
             }
         } else {
             //内容没有超过一个屏幕，这时拖拽高度大于1/2footer的高度就表示请求上拉
-            if scrollView.contentOffset.y + scrollView.contentInset.top >= animator.trigger / 2.0 {
+            if scrollView.contentOffset.y + scrollView.contentInset.top >= animator.trigger {
                 self.animator.refresh(view: self, stateDidChange: .refreshing)
                 self.startRefreshing()
             }

@@ -18,7 +18,7 @@ class FooterAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol {
     open var view: UIView { return self }
     open var duration: TimeInterval = 0.6
     open var insets: UIEdgeInsets = UIEdgeInsets.zero
-    open var trigger: CGFloat = 60
+    open var trigger: CGFloat = 80
     open var executeIncremental: CGFloat = 42
     open var state: ESRefreshViewState = .pullToRefresh
     
