@@ -14,6 +14,11 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     var movie = NSDictionary()
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.movieImage.image = nil
+    }
+    
     func loadImage() {
         
         // assign data
@@ -24,28 +29,20 @@ class MovieCollectionViewCell: UICollectionViewCell {
             
             let smallImageRequest = URLRequest(url: imageUrl)
             
-            let defaultImage = UIImage(named: "noImg")
-            
-            UIView.animate(withDuration: 0.5, animations: { () -> Void in
-                self.movieImage.image = defaultImage
-            })
-            
-            UIView.animate(withDuration: 0.8, animations: {
-                self.movieImage.image = defaultImage
-            })
-            
             movieImage.setImageWith(smallImageRequest, placeholderImage: nil, success: { (smallImageRequest, smallImageResponse, smallImage) in
                 self.movieImage.alpha = 0.0
                 self.movieImage.image = smallImage;
-                UIView.animate(withDuration: 1.2, animations: { () -> Void in
+                UIView.animate(withDuration: 1.0, animations: { () -> Void in
                     self.movieImage.alpha = 1.0
                 })
-            }, failure: {(request, response, error) in
-                self.movieImage.alpha = 0.0
-                self.movieImage.image = defaultImage
-                UIView.animate(withDuration: 2.0, animations: { () -> Void in
-                    self.movieImage.alpha = 1.0
-                })
+            })
+        }
+        else {
+            let defaultImage = UIImage(named: "noImg")
+            self.movieImage.alpha = 0.0
+            self.movieImage.image = defaultImage
+            UIView.animate(withDuration: 1.0, animations: { () -> Void in
+                self.movieImage.alpha = 1.0
             })
         }
     }

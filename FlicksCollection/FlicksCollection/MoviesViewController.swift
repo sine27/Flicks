@@ -165,7 +165,11 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     @IBAction func nowPlayingTapped(_ sender: UIButton) {
         resetFilterButtonColor()
         sender.setTitleColor(highlightColor, for: .normal)
-        filterButton.setTitle("Now Playing", for: .normal)
+        if endpoint == "top_rated" {
+            filterButton.setTitle("Top Rated", for: .normal)
+        } else {
+            filterButton.setTitle("Now Playing", for: .normal)
+        }
         hideDrodown()
         isSorting = false
         moviesCollectionView.es_startPullToRefresh()
@@ -197,6 +201,12 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         moviesCollectionView.delegate = self
         moviesCollectionView.dataSource = self
         
+        if endpoint == "top_rated" {
+            nowPlayingButton.setTitle("Top Rated", for: .normal)
+        } else {
+            nowPlayingButton.setTitle("Now Playing", for: .normal)
+        }
+
         // All subviews : labels and spinner
         helper.subviewSetup(sender: self)
         
@@ -298,8 +308,12 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         }
         
         cell.movie = movie
-
-        cell.loadImage()
+        
+        if cell.movieImage.image == nil {
+            cell.loadImage()
+        }
+        
+        
         
         return cell
     }
@@ -320,6 +334,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                     }
                     
                     let original_title = movie.value(forKey: "original_title") as? String
+                    let title = movie.value(forKey: "title") as? String
                     let overview = movie.value(forKey: "overview") as? String
                     let backdrop_path = movie.value(forKey: "backdrop_path") as? String
                     let poster_path = movie.value(forKey: "poster_path") as? String
@@ -334,7 +349,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                     
                     let adult = movie.value(forKey: "adult") as? Bool
 
-                    vc.movie = MovieModel(original_title: original_title, overview: overview, backdrop_path: backdrop_path, poster_path: poster_path, release_date: release_date, original_language: original_language, id: id!, popularity: popularity, vote_average: vote_average, vote_count: vote_count, runtime: runtime, adult: adult)
+                    vc.movie = MovieModel(original_title: original_title, title : title, overview: overview, backdrop_path: backdrop_path, poster_path: poster_path, release_date: release_date, original_language: original_language, id: id!, popularity: popularity, vote_average: vote_average, vote_count: vote_count, runtime: runtime, adult: adult)
                 }
             }
         }
@@ -485,7 +500,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                 
                 /// stop loading more data
                 if self.isMoreDataLoading {
-                    self.errorToTop.constant = self.view.frame.height - 158
+                    self.errorToTop.constant = self.view.frame.height - 100
                     self.errorButton.setTitle("Network Error! Pull to Load", for: .normal)
                     UIView.animate(withDuration: 0.8, animations: {
                         self.loadViewIfNeeded()

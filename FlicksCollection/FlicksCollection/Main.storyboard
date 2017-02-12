@@ -415,7 +415,7 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jxf-3s-Jq9">
-                                <rect key="frame" x="4" y="0.0" width="126" height="149"/>
+                                <rect key="frame" x="4" y="0.0" width="126" height="144.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="triangle" translatesAutoresizingMaskIntoConstraints="NO" id="Vdv-6k-lNW">
                                         <rect key="frame" x="17" y="0.0" width="10" height="5"/>
@@ -425,38 +425,41 @@
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qtn-tb-a6K">
-                                        <rect key="frame" x="0.0" y="5" width="126" height="144"/>
+                                        <rect key="frame" x="0.0" y="5" width="126" height="139.5"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bbL-3G-zKf">
-                                        <rect key="frame" x="20.5" y="12.5" width="84" height="129"/>
+                                        <rect key="frame" x="20.5" y="12.5" width="84" height="125"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RHM-LF-Cnp">
-                                                <rect key="frame" x="0.0" y="0.0" width="84" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="84" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="a8z-1N-yf7"/>
+                                                </constraints>
                                                 <state key="normal" title="Now Playing"/>
                                                 <connections>
                                                     <action selector="nowPlayingTapped:" destination="eXD-rP-bjD" eventType="touchUpInside" id="0CO-SA-AIp"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PTr-Bx-91s">
-                                                <rect key="frame" x="0.0" y="30" width="84" height="33"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <rect key="frame" x="0.0" y="35" width="84" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <state key="normal" title="Popularity"/>
                                                 <connections>
                                                     <action selector="popularTapped:" destination="eXD-rP-bjD" eventType="touchUpInside" id="hxi-qQ-EEb"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eJh-Qu-gNC">
-                                                <rect key="frame" x="0.0" y="63" width="84" height="33"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <rect key="frame" x="0.0" y="65" width="84" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <state key="normal" title="Date"/>
                                                 <connections>
                                                     <action selector="recentTapped:" destination="eXD-rP-bjD" eventType="touchUpInside" id="m7E-Ae-nxQ"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jL1-Ux-gga">
-                                                <rect key="frame" x="0.0" y="96" width="84" height="33"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <rect key="frame" x="0.0" y="95" width="84" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <state key="normal" title="Rate"/>
                                                 <connections>
                                                     <action selector="rateTapped:" destination="eXD-rP-bjD" eventType="touchUpInside" id="0bT-G3-9sc"/>

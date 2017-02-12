@@ -47,8 +47,6 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(movie)
-        
         self.navigationController?.isNavigationBarHidden = false
         
         self.imgScrollView.minimumZoomScale = 1.0
@@ -189,7 +187,11 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
             })
         }
         
-        titleLabel.text = movie.original_title
+        if movie.original_title == movie.title {
+            titleLabel.text = movie.original_title
+        } else {
+            titleLabel.text = "\(movie.original_title)(\(movie.title))"
+        }
         
         let dateString = movie.release_date
         

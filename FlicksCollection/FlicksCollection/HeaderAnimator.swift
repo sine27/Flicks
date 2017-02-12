@@ -19,6 +19,7 @@ class HeaderAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol, ESRe
     }
     open var releaseToRefreshDescription = "Release to refresh"
     open var loadingDescription = "Loading..."
+    open var pullToRefreshEndDescription = "Success"
     
     open var view: UIView { return self }
     open var insets: UIEdgeInsets = UIEdgeInsets.zero
@@ -74,9 +75,9 @@ class HeaderAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol, ESRe
         indicatorView.stopAnimating()
         indicatorView.isHidden = true
         imageView.isHidden = false
-        titleLabel.text = pullToRefreshDescription
-        imageView.transform = CGAffineTransform.identity
+        titleLabel.text = pullToRefreshEndDescription
     }
+
     
     open func refresh(view: ESRefreshComponent, progressDidChange progress: CGFloat) {
         // Do nothing
@@ -129,5 +130,4 @@ class HeaderAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol, ESRe
             imageView.frame = CGRect.init(x: titleLabel.frame.origin.x - 28.0, y: (h - 18.0) / 2.0, width: 18.0, height: 18.0)
         }
     }
-    
 }
