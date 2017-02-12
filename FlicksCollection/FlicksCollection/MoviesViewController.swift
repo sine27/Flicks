@@ -78,6 +78,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     // orange color
     let highlightColor = UIColor(red: 1, green: 149/255, blue: 0, alpha: 1)
     
+    var endpoint = ""
+    
     let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
     
     var requestPrefix = "https://api.themoviedb.org/3"
@@ -189,7 +191,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        movieRequest = "\(requestPrefix)/movie/now_playing?api_key=\(apiKey)"
+        movieRequest = "\(requestPrefix)/movie/\(endpoint)?api_key=\(apiKey)"
         
         // setup collection view
         moviesCollectionView.delegate = self
@@ -296,7 +298,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
         }
         
         cell.movie = movie
-        
+
         cell.loadImage()
         
         return cell

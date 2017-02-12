@@ -42,12 +42,6 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
-        // hide content view at first
-        viewToBottom.constant = 0 - self.contentView.frame.height + 5
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        showView()
     }
     
     override func viewDidLoad() {
@@ -59,9 +53,10 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
         
         self.imgScrollView.minimumZoomScale = 1.0
         self.imgScrollView.maximumZoomScale = 6.0
-        
-        self.contentView.alpha = 0.2
-        moviePostImg.alpha = 0.6
+
+        // hide content view at first
+        viewToBottom.constant = 0 - self.contentView.frame.height + 5
+        showView()
         
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = 10
