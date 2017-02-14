@@ -169,20 +169,19 @@ class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
                         success: { (largeImageRequest, largeImageResponse, largeImage) -> Void in
                             self.moviePostImg.image = largeImage;
                             self.imgLoadSuccessful = true
-                            // fade out blur view
-                            UIView.animate(withDuration: 1.0, animations: {
-                                blurView.alpha = 0
-                            }, completion: { (finished: Bool) -> Void in
-                                blurView.removeFromSuperview()
-                            })
                     },
                         failure: { (request, response, error) -> Void in
-                            let defaultImg = UIImage(named: "background")
-                            self.moviePostImg.image = defaultImg
+                            self.moviePostImg.image = smallImage
+                    })
+                    // fade out blur view
+                    UIView.animate(withDuration: 1.0, animations: {
+                        blurView.alpha = 0
+                    }, completion: { (finished: Bool) -> Void in
+                        blurView.removeFromSuperview()
                     })
                 })
             }, failure: {(request, response, error) in
-                let defaultImg = UIImage(named: "background")
+                let defaultImg = UIImage(named: "noImg")
                 self.moviePostImg.image = defaultImg
             })
         }

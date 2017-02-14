@@ -393,6 +393,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     func autoHideKeyboardWhenTapOutside(sender: UITapGestureRecognizer) {
         moviesCollectionView.removeGestureRecognizer(tapGesture)
+        moviesCollectionView.es_removeRefreshFooter()
         view.endEditing(true)
     }
     
@@ -499,7 +500,9 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                 
                 /// stop loading more data
                 if self.isMoreDataLoading {
-                    self.errorToTop.constant = self.view.frame.height - 100
+                    self.errorToTop.constant = self.view.frame.height - 60 - self.errorButton.frame.height
+                    print("\(self.view.frame.height) \(self.errorButton.frame.height)")
+                    
                     self.errorButton.setTitle("Network Error! Pull to Load", for: .normal)
                     UIView.animate(withDuration: 0.8, animations: {
                         self.loadViewIfNeeded()
