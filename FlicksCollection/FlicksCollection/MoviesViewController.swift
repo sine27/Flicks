@@ -68,8 +68,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     // loading page > 1
     var isMoreDataLoading = false
     
-    var searchCancelled = false
-    
     // page number for request +1 when request data successfully
     var moviePage = 1
     
@@ -259,10 +257,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
             
             self.isMoreDataLoading = true
             
-            if self.searchCancelled == true {
-                self.moviesCollectionView.es_noticeNoMoreData()
-            }
-            else if self.searchActive && self.searchRequest != "" {
+            if self.searchActive && self.searchRequest != "" {
                 self.request(identity: 0, urlString: self.searchRequest)
             }
             else if self.isSorting {
@@ -372,7 +367,6 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchCancelled = false
         searchActive = true
         self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
         
@@ -399,11 +393,13 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     func autoHideKeyboardWhenTapOutside(sender: UITapGestureRecognizer) {
         moviesCollectionView.removeGestureRecognizer(tapGesture)
-        searchCancelled = true
+        moviesCollectionView.es_footer?.isHidden = true
         view.endEditing(true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        moviesCollectionView.es_footer?.isHidden = false
         
         UIView.animate(withDuration: 0.6) {
             self.loadViewIfNeeded()
@@ -504,10 +500,12 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
                 
                 self.searchBarButton.isEnabled = false
                 
+                if error.localizedDescription == "unsupported URL" {
+                    self.moviesCollectionView.es_stopLoadingMore()
+                }
                 /// stop loading more data
-                if self.isMoreDataLoading {
+                else if self.isMoreDataLoading {
                     self.errorToTop.constant = self.view.frame.height - 60 - self.errorButton.frame.height
-                    print("\(self.view.frame.height) \(self.errorButton.frame.height)")
                     
                     self.errorButton.setTitle("Network Error! Pull to Load", for: .normal)
                     UIView.animate(withDuration: 0.8, animations: {
