@@ -68,6 +68,8 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     // loading page > 1
     var isMoreDataLoading = false
     
+    var searchCancelled = false
+    
     // page number for request +1 when request data successfully
     var moviePage = 1
     
@@ -257,7 +259,10 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
             
             self.isMoreDataLoading = true
             
-            if self.searchActive && self.searchRequest != "" {
+            if self.searchCancelled == true {
+                self.moviesCollectionView.es_noticeNoMoreData()
+            }
+            else if self.searchActive && self.searchRequest != "" {
                 self.request(identity: 0, urlString: self.searchRequest)
             }
             else if self.isSorting {
@@ -367,6 +372,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchCancelled = false
         searchActive = true
         self.helper.reloadDataWithAnimation(collectionView : self.moviesCollectionView)
         
@@ -393,7 +399,7 @@ class MoviesViewController: UIViewController, UISearchBarDelegate, UICollectionV
     
     func autoHideKeyboardWhenTapOutside(sender: UITapGestureRecognizer) {
         moviesCollectionView.removeGestureRecognizer(tapGesture)
-        moviesCollectionView.es_removeRefreshFooter()
+        searchCancelled = true
         view.endEditing(true)
     }
     
