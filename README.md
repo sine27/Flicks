@@ -15,26 +15,26 @@ Time spent:
 
 The following **required** functionality is completed:
 
-- ☑️ User can view movie details by tapping on a cell.
-- ☑️ User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
-- ☑️ Customize the selection effect of the cell.
+- [x] User can view movie details by tapping on a cell.
+- [x] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
+- [x] Customize the selection effect of the cell.
 
 The following **optional** features are implemented:
 
-- ☑️ For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
-- ☑️ Customize the navigation bar.
+- [x] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
+- [x] Customize the navigation bar.
 
 The following **additional** features are implemented:
 
-- ☑️ User can show the content view by tapping the button and hide it by tapping outside or tapping the button.
-- ☑️ User can scroll the content view.
-- ☑️ User can sort the movies by swiching filter keys in the dropdown menu.
-- ☑️ User can zoom the original poster in the detail view.
-- ☑️ User can hide keyboard by tapping outside.
-- ☑️ User can hide the dropdown menu by tapping outside.
-- ☑️ User can pull to load more data.
-- ☑️ User can view the review table by clicking the right navigation bar item.
-- ☑️ User can view the full content of a review by tapping the cell.
+- [x] User can show the content view by tapping the button and hide it by tapping outside or tapping the button.
+- [x] User can scroll the content view.
+- [x] User can sort the movies by swiching filter keys in the dropdown menu.
+- [x] User can zoom the original poster in the detail view.
+- [x] User can hide keyboard by tapping outside.
+- [x] User can hide the dropdown menu by tapping outside.
+- [x] User can pull to load more data.
+- [x] User can view the review table by clicking the right navigation bar item.
+- [x] User can view the full content of a review by tapping the cell.
 
 ## Video Walkthrough 
 
